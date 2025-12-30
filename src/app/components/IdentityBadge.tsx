@@ -13,7 +13,7 @@ const STORAGE_KEY = 'badge-rotation-state';
 
 export function IdentityBadge({ isDark }: IdentityBadgeProps) {
   const badgeRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
