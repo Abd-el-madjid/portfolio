@@ -1,15 +1,32 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { badgeImages, totalBadgeImages, loadImage, preloadNextImage } from '../utils/badgeImages';
 
 interface IdentityBadgeProps {
   isDark: boolean;
 }
+const INTERVAL = 10_000; // 10 seconds
+const STORAGE_KEY = 'badge-rotation-state';
+
+
 
 export function IdentityBadge({ isDark }: IdentityBadgeProps) {
   const badgeRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+
+  const [index, setIndex] = useState(0);
+  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
+
+  const totalImages = 100; // adjust to your number of badge images
+
+  // -------------------------------
+  // Mouse movement handlers
+  // -------------------------------
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!badgeRef.current) return;
@@ -30,6 +47,65 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
     setRotation({ x: 0, y: 0 });
     setIsHovered(false);
   };
+
+  // -------------------------------
+  // Restore state from sessionStorage
+  // -------------------------------
+  function restoreState() {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return { index: 0, remaining: INTERVAL };
+
+    const saved = JSON.parse(raw) as { index: number; lastChange: number };
+    const elapsed = Date.now() - saved.lastChange;
+    const steps = Math.floor(elapsed / INTERVAL);
+    const restoredIndex = (saved.index + steps) % totalBadgeImages;
+    const remaining = INTERVAL - (elapsed % INTERVAL);
+
+    return { index: restoredIndex, remaining };
+  }
+  const advance = async () => {
+    const nextIndex = (index + 1) % totalBadgeImages;
+    const nextSrc = await loadImage(nextIndex);
+
+    // Update current image and preload next
+    if (nextSrc) {
+      setCurrentSrc(nextSrc);
+      preloadNextImage(nextIndex); // prefetch next image
+      setIndex(nextIndex);
+
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ index: nextIndex, lastChange: Date.now() })
+      );
+    } else {
+      // fallback if next image doesn't exist
+      timerRef.current = setTimeout(advance, INTERVAL);
+    }
+
+
+    sessionStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ index: nextIndex, lastChange: Date.now() })
+    );
+
+    timerRef.current = setTimeout(advance, INTERVAL);
+  };
+
+  // -------------------------------
+  // On mount
+  // -------------------------------
+  useEffect(() => {
+    const { index: restoredIndex, remaining } = restoreState();
+
+    loadImage(restoredIndex).then((src) => setCurrentSrc(src));
+    setIndex(restoredIndex);
+
+    timerRef.current = setTimeout(advance, remaining);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -130,11 +206,14 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
         {/* Image */}
         <div className="relative w-full h-full p-6">
           <div className="w-full h-full rounded-2xl overflow-hidden">
-            <ImageWithFallback
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop"
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
+            {currentSrc && (
+              <ImageWithFallback
+                key={currentSrc} // 🔥 remove old image
+                src={currentSrc}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
         </div>
 
