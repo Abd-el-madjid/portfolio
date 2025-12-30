@@ -2,3 +2,11 @@ node_modules
 ATTRIBUTIONS.md
 guidelines
 venv
+figma
+src/app/components/figma
+src/app/components/guidelines
+src/app/components/attributions
+src/app/components/.DS_Store
+src/app/components/guidelines/.DS_Store
+src/app/components/attributions/.DS_Store
+src/app/components/figma/.DS_Store
