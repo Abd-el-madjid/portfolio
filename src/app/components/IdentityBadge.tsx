@@ -5,6 +5,8 @@ import { badgeImages, totalBadgeImages, loadImage, preloadNextImage } from '../u
 
 interface IdentityBadgeProps {
   isDark: boolean;
+    onHoverChange?: (hovered: boolean) => void;
+
 }
 const INTERVAL = 10_000; // 10 seconds
 const STORAGE_KEY = 'badge-rotation-state';
@@ -13,7 +15,7 @@ const STORAGE_KEY = 'badge-rotation-state';
 
 export function IdentityBadge({ isDark }: IdentityBadgeProps) {
   const badgeRef = useRef<HTMLDivElement>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<number | null>(null);
 
 
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
@@ -63,33 +65,25 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
 
     return { index: restoredIndex, remaining };
   }
-  const advance = async () => {
-    const nextIndex = (index + 1) % totalBadgeImages;
-    const nextSrc = await loadImage(nextIndex);
-
-    // Update current image and preload next
-    if (nextSrc) {
-      setCurrentSrc(nextSrc);
-      preloadNextImage(nextIndex); // prefetch next image
-      setIndex(nextIndex);
-
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({ index: nextIndex, lastChange: Date.now() })
-      );
-    } else {
-      // fallback if next image doesn't exist
-      timerRef.current = setTimeout(advance, INTERVAL);
-    }
-
-
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ index: nextIndex, lastChange: Date.now() })
-    );
+const advance = () => {
+  setIndex((prevIndex) => {
+    const nextIndex = (prevIndex + 1) % totalBadgeImages;
+    
+    loadImage(nextIndex).then((src) => {
+      if (src) {
+        setCurrentSrc(src);
+        preloadNextImage(nextIndex);
+        sessionStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({ index: nextIndex, lastChange: Date.now() })
+        );
+      }
+    });
 
     timerRef.current = setTimeout(advance, INTERVAL);
-  };
+    return nextIndex;
+  });
+};
 
   // -------------------------------
   // On mount
@@ -230,7 +224,7 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <h3 className={`text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Your Name
+            Kahoul Abd EL Madjid
           </h3>
           <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-slate-600'}`}>
             Creative Developer
