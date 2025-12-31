@@ -77,6 +77,29 @@ export function BookingOverlayImproved({ isOpen, onClose, isDark }: BookingOverl
                 <p className={`text-md ${isDark ? 'text-gray-300' : 'text-slate-700'}`}>
                   Schedule your meeting
                 </p>
+                
+                {/* Event type selector - Desktop only */}
+                <div className="flex gap-2 mt-6 flex-col w-full">
+                  {(Object.entries(EVENT_TYPES) as [EventType, any][])
+                    .filter(([key, cfg]) => cfg.public || key === eventType)
+                    .map(([key, cfg]) => (
+                      <button
+                        key={key}
+                        onClick={() => setEventType(key)}
+                        className={`px-4 py-2 rounded-lg text-sm transition ${
+                          eventType === key
+                            ? isDark
+                              ? 'bg-white/10 text-white'
+                              : 'bg-slate-900/10 text-slate-900'
+                            : isDark
+                            ? 'text-gray-400 hover:bg-white/5'
+                            : 'text-slate-500 hover:bg-slate-900/5'
+                        }`}
+                      >
+                        {cfg.label}
+                      </button>
+                    ))}
+                </div>
               </div>
 
               {/* Right Panel - Cal.com Embed */}
@@ -92,8 +115,8 @@ export function BookingOverlayImproved({ isOpen, onClose, isDark }: BookingOverl
                   <X size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
                 </motion.button>
 
-                {/* Event type selector */}
-                <div className="flex gap-2 mb-4 flex-wrap">
+                {/* Event type selector - Mobile only */}
+                <div className="flex md:hidden gap-2 mb-4 flex-wrap">
                   {(Object.entries(EVENT_TYPES) as [EventType, any][])
                     .filter(([key, cfg]) => cfg.public || key === eventType)
                     .map(([key, cfg]) => (
