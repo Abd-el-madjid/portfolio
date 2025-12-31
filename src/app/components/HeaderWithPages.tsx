@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Menu, Github, Linkedin, Calendar } from 'lucide-react';
+import { Menu,Download, Github, Linkedin, Calendar } from 'lucide-react';
+import Logo from '../assets/home/logo.png'; // adjust the path to your logo
+import CV from '../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf'; // adjust the path to your logo
 
 interface HeaderWithPagesProps {
   isDark: boolean;
@@ -48,13 +50,16 @@ export function HeaderWithPages({
           {/* Logo / Name */}
           <motion.button
             onClick={() => onNavigate('home')}
-            className="text-xl tracking-wide"
+            className="flex items-center"
             whileHover={{ scale: 1.02 }}
           >
-            <span className={isDark ? 'text-white' : 'text-slate-900'}>
-              Your Name
-            </span>
+            <img
+              src={Logo} // <-- replace with your logo path
+              alt="Logo"
+              className="h-8 w-auto" // adjust size as needed
+            />
           </motion.button>
+
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
@@ -91,7 +96,7 @@ export function HeaderWithPages({
           {/* Right Icons */}
           <div className="flex items-center gap-4">
             <motion.a
-              href="https://github.com"
+              href="https://github.com/Abd-el-madjid"
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
@@ -100,7 +105,7 @@ export function HeaderWithPages({
               <Github size={20} />
             </motion.a>
             <motion.a
-              href="https://linkedin.com"
+              href="www.linkedin.com/in/kahoul-abd-el-madjid"
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
@@ -108,6 +113,22 @@ export function HeaderWithPages({
             >
               <Linkedin size={20} />
             </motion.a>
+             <motion.a
+              href={CV}
+              download
+              className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Download size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
+              
+            </motion.a>
+
+
+
+
+
+
             <motion.button
               onClick={onOpenBooking}
               className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg ${
