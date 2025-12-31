@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Menu,Download, Github, Linkedin, Calendar } from 'lucide-react';
-import Logo from '../assets/home/logo.png'; // adjust the path to your logo
-import CV from '../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf'; // adjust the path to your logo
+import Logo from '../assets/home/logo.png';
+import CV from '../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
 
 interface HeaderWithPagesProps {
   isDark: boolean;
@@ -27,6 +27,8 @@ export function HeaderWithPages({
     { id: 'services', label: 'Services' },
     { id: 'projects', label: 'Projects' },
   ];
+
+  const isHome = currentPage === 'home';
 
   return (
     <motion.header
@@ -54,12 +56,11 @@ export function HeaderWithPages({
             whileHover={{ scale: 1.02 }}
           >
             <img
-              src={Logo} // <-- replace with your logo path
+              src={Logo}
               alt="Logo"
-              className="h-8 w-auto" // adjust size as needed
+              className="h-8 w-auto"
             />
           </motion.button>
-
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
@@ -105,7 +106,7 @@ export function HeaderWithPages({
               <Github size={20} />
             </motion.a>
             <motion.a
-              href="www.linkedin.com/in/kahoul-abd-el-madjid"
+              href="https://www.linkedin.com/in/kahoul-abd-el-madjid"
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
@@ -113,35 +114,46 @@ export function HeaderWithPages({
             >
               <Linkedin size={20} />
             </motion.a>
-             <motion.a
-              href={CV}
-              download
-              className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Download size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
-              
-            </motion.a>
 
+            {/* Download CV - Hidden on Home page */}
+            {!isHome && (
+              <motion.a
+                href={CV}
+                download
+                target="_blank"
 
+                className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Download size={20} />
+              </motion.a>
+            )}
 
-
-
-
-            <motion.button
-              onClick={onOpenBooking}
-              className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg ${
-                isDark
-                  ? 'bg-white/10 hover:bg-white/20 text-white'
-                  : 'bg-cyan-500/20 hover:bg-cyan-500/30 text-slate-900'
-              }`}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Calendar size={16} />
-              <span>Book</span>
-            </motion.button>
+            {/* Book Button - Hidden on Home page */}
+            {!isHome && (
+              <motion.button
+                onClick={onOpenBooking}
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg ${
+                  isDark
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-cyan-500/20 hover:bg-cyan-500/30 text-slate-900'
+                }`}
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Calendar size={16} />
+                <span>Book</span>
+              </motion.button>
+            )}
 
             {/* Theme Toggle */}
             <motion.button

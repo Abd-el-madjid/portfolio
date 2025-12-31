@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Calendar, Download } from 'lucide-react';
 import { IdentityBadge } from '../IdentityBadge';
-
+import React from 'react';
+import CV_LINK from '../../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
 interface HomePageProps {
   isDark: boolean;
   onNavigate: (page: string) => void;
@@ -9,7 +10,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
-  const name = "Kahoul Abd El Madjid";
+  const name = "Kahoul  Abd  El  Madjid";
   
   return (
     <section className="min-h-screen flex items-center justify-center px-8 pt-32 pb-20">
@@ -22,7 +23,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
-            className="space-y-4"
+            className="space-y-6"
             animate={{
               y: [0, -5, 0],
             }}
@@ -35,36 +36,118 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             <motion.h1
               className={`text-5xl md:text-6xl ${
                 isDark ? 'text-white' : 'text-slate-900'
-              } tracking-tight font-bold cursor-default`}
+              } tracking-tight font-bold cursor-default whitespace-nowrap`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {name.split('').map((char, index) => (
-                <motion.span
-                  key={index}
-                  className="inline-block"
-                  whileHover={{
-                    y: -10,
-                    scale: 1.2,
-                    color: isDark ? '#60a5fa' : '#0369a1',
-                    textShadow: isDark 
-                      ? '0 0 20px rgba(96, 165, 250, 0.8), 0 0 40px rgba(96, 165, 250, 0.4)'
-                      : '0 0 20px rgba(3, 105, 161, 0.6)',
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 10
-                  }}
-                  style={{
-                    display: char === ' ' ? 'inline' : 'inline-block',
-                    marginRight: char === ' ' ? '0.5rem' : '0'
-                  }}
-                >
-                  {char === ' ' ? '\u00A0' : char}
-                </motion.span>
-              ))}
+              {name.split('').map((char, index) => {
+                const [isHovered, setIsHovered] = React.useState(false);
+                
+                // Generate random number of stars (between 8-15) for each character
+                const starCount = React.useMemo(() => Math.floor(Math.random() * 8) + 8, []);
+                
+                // Generate random positions for splitting stars
+                const splitPositions = React.useMemo(() => {
+                  const positions = [];
+                  for (let i = 0; i < starCount; i++) {
+                    const angle = (Math.PI * 2 * i) / starCount + (Math.random() - 0.5) * 0.5;
+                    const distance = 25 + Math.random() * 15;
+                    positions.push({
+                      x: Math.cos(angle) * distance,
+                      y: Math.sin(angle) * distance,
+                      rotation: Math.random() * 720 - 360,
+                      delay: Math.random() * 0.1,
+                    });
+                  }
+                  return positions;
+                }, [starCount]);
+                
+                return (
+                  <motion.span
+                    key={index}
+                    className="relative"
+                    onHoverStart={() => setIsHovered(true)}
+                    onHoverEnd={() => setIsHovered(false)}
+                    style={{
+                      display: 'inline-block',
+                      position: 'relative',
+                    }}
+                  >
+                    {/* Original Character - stays visible until hover */}
+                    <motion.span
+                      style={{
+                        display: 'inline-block',
+                      }}
+                      animate={isHovered ? {
+                        opacity: 0,
+                        scale: 0.3,
+                      } : {
+                        opacity: 1,
+                        scale: 1,
+                      }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      {char}
+                    </motion.span>
+                    
+                    {/* Exploding Stars (on hover only) */}
+                    {char !== ' ' && splitPositions.map((pos, i) => (
+                      <motion.span
+                        key={i}
+                        className="absolute pointer-events-none"
+                        style={{
+                          left: '50%',
+                          top: '50%',
+                          transform: 'translate(-50%, -50%)',
+                        }}
+                        animate={isHovered ? {
+                          x: pos.x,
+                          y: pos.y,
+                          opacity: [0, 1, 0.9, 0.7],
+                          scale: [0, 0.8, 0.6, 0.5],
+                          rotate: pos.rotation,
+                        } : {
+                          x: 0,
+                          y: 0,
+                          opacity: 0,
+                          scale: 0,
+                          rotate: 0,
+                        }}
+                        transition={{
+                          duration: 0.6,
+                          delay: pos.delay,
+                          ease: [0.34, 1.56, 0.64, 1]
+                        }}
+                      >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          style={{
+                            filter: isDark 
+                              ? 'drop-shadow(0 0 4px rgba(255, 255, 255, 0.8))'
+                              : 'drop-shadow(0 0 4px rgba(3, 105, 161, 0.6))'
+                          }}
+                        >
+                          <path
+                            d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"
+                            fill={isDark ? '#ffffff' : '#0369a1'}
+                            opacity="0.9"
+                          />
+                          <circle
+                            cx="12"
+                            cy="10"
+                            r="8"
+                            fill={isDark ? '#ffffff' : '#0369a1'}
+                            opacity="0.15"
+                          />
+                        </svg>
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                );
+              })}
             </motion.h1>
 
             <motion.div
@@ -143,8 +226,10 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             </motion.button>
 
             <motion.a
-              href="/cv.pdf"
+              href= {CV_LINK}
               download
+              target="_blank"
+
               className="flex items-center gap-3 px-8 py-4 rounded-2xl backdrop-blur-xl shadow-lg"
               style={{
                 background: isDark

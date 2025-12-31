@@ -145,7 +145,7 @@ export default function App() {
           }}
         >
           <p className={isDark ? 'text-gray-300' : 'text-slate-700'}>
-            © {new Date().getFullYear()} Your Name. Built with intention, designed with purpose.
+            © {new Date().getFullYear()} Abd El Madjid. Built with intention, designed with purpose.
           </p>
         </div>
       </footer>
