@@ -35,7 +35,9 @@ export function CosmicBackground({ isDark = true }: { isDark?: boolean }) {
           id: i,
           x: Math.random() * window.innerWidth,
           y: Math.random() * document.body.scrollHeight,
-          size: Math.random() * 2 + 0.5,
+          size: isDark
+          ? Math.random() * 0.8 + 0.4   // small stars (dark)
+          : Math.random() * 2 + 0.5,  // larger stars (light)
           brightness: Math.random() * 0.5 + 0.5,
           speedX: isDark ? (Math.random() - 0.5) * 0.05 : (Math.random() - 0.5) * 0.5,
           speedY: isDark ? (Math.random() - 0.5) * 0.05 : Math.random() * 1 + 0.5,
