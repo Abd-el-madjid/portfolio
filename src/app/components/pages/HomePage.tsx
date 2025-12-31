@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Calendar, Download } from 'lucide-react';
 import { IdentityBadge } from '../IdentityBadge';
-import React from 'react';
 
 interface HomePageProps {
   isDark: boolean;
@@ -41,85 +40,31 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {name.split('').map((char, index) => {
-                const [isHovered, setIsHovered] = React.useState(false);
-                
-                return (
-                  <motion.span
-                    key={index}
-                    className="inline-block relative"
-                    onHoverStart={() => setIsHovered(true)}
-                    onHoverEnd={() => setIsHovered(false)}
-                    animate={isHovered ? {
-                      y: -10,
-                      scale: 1.3,
-                    } : {}}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 300,
-                      damping: 10
-                    }}
-                    style={{
-                      display: char === ' ' ? 'inline' : 'inline-block',
-                      marginRight: char === ' ' ? '0.5rem' : '0',
-                    }}
-                  >
-                    <motion.span
-                      animate={isHovered ? {
-                        opacity: [1, 0],
-                        scale: [1, 0],
-                      } : {
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {char === ' ' ? '\u00A0' : char}
-                    </motion.span>
-                    
-                    <motion.span
-                      className="absolute inset-0 flex items-center justify-center"
-                      animate={isHovered ? {
-                        opacity: [0, 1],
-                        scale: [0, 1.2],
-                      } : {
-                        opacity: 0,
-                        scale: 0,
-                      }}
-                      transition={{ duration: 0.2 }}
-                      style={{
-                        fontSize: '1em',
-                      }}
-                    >
-                      <svg
-                        width="1em"
-                        height="1em"
-                        viewBox="0 0 24 24"
-                        style={{
-                          filter: isDark 
-                            ? 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.4))'
-                            : 'drop-shadow(0 0 8px rgba(3, 105, 161, 0.6))'
-                        }}
-                      >
-                        {/* Main star shape */}
-                        <path
-                          d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z"
-                          fill={isDark ? '#ffffff' : '#0369a1'}
-                          opacity="0.9"
-                        />
-                        {/* Glow circle */}
-                        <circle
-                          cx="12"
-                          cy="10"
-                          r="8"
-                          fill={isDark ? '#ffffff' : '#0369a1'}
-                          opacity="0.15"
-                        />
-                      </svg>
-                    </motion.span>
-                  </motion.span>
-                );
-              })}
+              {name.split('').map((char, index) => (
+                <motion.span
+                  key={index}
+                  className="inline-block"
+                  whileHover={{
+                    y: -10,
+                    scale: 1.2,
+                    color: isDark ? '#60a5fa' : '#0369a1',
+                    textShadow: isDark 
+                      ? '0 0 20px rgba(96, 165, 250, 0.8), 0 0 40px rgba(96, 165, 250, 0.4)'
+                      : '0 0 20px rgba(3, 105, 161, 0.6)',
+                  }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 10
+                  }}
+                  style={{
+                    display: char === ' ' ? 'inline' : 'inline-block',
+                    marginRight: char === ' ' ? '0.5rem' : '0'
+                  }}
+                >
+                  {char === ' ' ? '\u00A0' : char}
+                </motion.span>
+              ))}
             </motion.h1>
 
             <motion.div
