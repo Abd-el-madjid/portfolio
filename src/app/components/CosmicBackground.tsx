@@ -157,7 +157,7 @@ export function CosmicBackground({ isDark = true }: { isDark?: boolean }) {
 
         const pulse = Math.sin(time * star.pulseSpeed + star.pulseOffset) * 0.3 + 0.7;
         const opacity = star.brightness * pulse;
-
+// from here to the next comment  replace it to get star as mouse shape
         ctx.globalAlpha = opacity * (isDark ? 1 : 0.6);
         ctx.fillStyle = isDark ? "#ffffff" : "#0369a1";
         ctx.beginPath();
@@ -170,6 +170,41 @@ export function CosmicBackground({ isDark = true }: { isDark?: boolean }) {
           ctx.arc(star.x + parallaxX, star.y - parallaxY, star.size * 2, 0, Math.PI * 2);
           ctx.fill();
         }
+// if u want u can change the stars to be as the mouse shape
+//                 if (isDark) {
+//           // SVG as string
+//           const starSvg = `
+//             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+//               <path d="M12 2 L13.5 8.5 L20 10 L13.5 11.5 L12 18 L10.5 11.5 L4 10 L10.5 8.5 Z" fill="white" opacity="0.9"/>
+//               <circle cx="12" cy="10" r="8" fill="white" opacity="0.1"/>
+//             </svg>
+//           `;
+          
+//           // Convert SVG string to Image
+//           const svgImg = new Image();
+//           svgImg.src = `data:image/svg+xml;base64,${btoa(starSvg)}`;
+
+//           ctx.globalAlpha = opacity;
+//           ctx.drawImage(svgImg, star.x + parallaxX - 12, star.y - parallaxY - 12, 24, 24);
+//         }
+//  else {
+//           // Keep the existing light mode circle logic
+//           ctx.globalAlpha = opacity * 0.6;
+//           ctx.fillStyle = "#0369a1";
+//           ctx.beginPath();
+//           ctx.arc(star.x + parallaxX, star.y - parallaxY, star.size, 0, Math.PI * 2);
+//           ctx.fill();
+
+//           if (star.size > 1.5) {
+//             ctx.globalAlpha = opacity * 0.4;
+//             ctx.beginPath();
+//             ctx.arc(star.x + parallaxX, star.y - parallaxY, star.size * 2, 0, Math.PI * 2);
+//             ctx.fill();
+//           }
+//         }
+//         ctx.globalAlpha = 1;
+
+//       });
       });
 
       ctx.globalAlpha = 1;
