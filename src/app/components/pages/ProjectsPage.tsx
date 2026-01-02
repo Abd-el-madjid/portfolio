@@ -12,148 +12,25 @@ interface ProjectsPageProps {
   isDark: boolean;
   onProjectClick: (projectId: string) => void;
 }
+import { projects, CATEGORIES } from '@/data/index';
+import {  getCategoryColors } from '@/lib/colors';
+
 
 // Category definitions with their gradients
-const CATEGORIES = {
-  'AI & Telecom': { gradient: 'from-cyan-500 to-blue-600', color: 'cyan' },
-  'UI/UX': { gradient: 'from-purple-500 to-pink-600', color: 'purple' },
-  'AI & Web': { gradient: 'from-green-500 to-teal-600', color: 'green' },
-  'Full-Stack': { gradient: 'from-orange-500 to-red-600', color: 'orange' },
-  'AI & DevOps': { gradient: 'from-blue-500 to-indigo-600', color: 'blue' },
-  'Enterprise': { gradient: 'from-violet-500 to-purple-600', color: 'violet' },
-};
+
 
 export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     Object.keys(CATEGORIES)
   );
 
-  const projects = [
-    {
-      id: 'cosmic-dashboard',
-      title: "RAVA – AI Anomaly Detection",
-      description: "AI platform for real-time LTE KPI anomaly detection and intelligent alerting in telecom networks.",
-      tech: ["Python", "TensorFlow", "Django", "React"],
-      problem: "Manual KPI monitoring was inefficient and prone to missed anomalies in large-scale telecom networks.",
-      solution: "Developed an AI-powered platform that automatically detects anomalies in real-time, reducing response time by 70%.",
-      outcome: "Successfully deployed across Ooredoo Algeria's network, monitoring thousands of cell sites.",
-      category: "AI & Telecom",
-      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/rava',
-      demo: 'https://rava-demo.com',
-    },
-    {
-      id: 'design-system',
-      title: 'Design System Pro',
-      description: 'Comprehensive component library for enterprise applications with advanced theming.',
-      tech: ['React', 'Storybook', 'Tailwind', 'TypeScript'],
-      problem: "Inconsistent UI across multiple products led to poor user experience and slow development.",
-      solution: "Built a scalable design system with 100+ components, comprehensive documentation, and automated testing.",
-      outcome: "Reduced development time by 40% and improved UI consistency across 5 products.",
-      category: "UI/UX",
-      image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/design-system',
-      demo: 'https://design-system-demo.com',
-    },
-    {
-      id: 'ai-chat',
-      title: 'AI Chat Interface',
-      description: 'Conversational AI platform with real-time streaming and natural language processing.',
-      tech: ['Next.js', 'OpenAI', 'WebSocket', 'Redis'],
-      problem: "Users needed a responsive, intelligent chat interface for complex queries and long conversations.",
-      solution: "Created a streaming chat platform with context retention, markdown support, and real-time responses.",
-      outcome: "Handling 10K+ daily conversations with 95% user satisfaction rate.",
-      category: "AI & Web",
-      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/ai-chat',
-      demo: 'https://ai-chat-demo.com',
-    },
-    {
-      id: 'ecommerce',
-      title: 'E-Commerce Platform',
-      description: 'Full-featured online store with payment integration and inventory management.',
-      tech: ['Next.js', 'Stripe', 'PostgreSQL', 'Prisma'],
-      problem: "Small businesses lacked affordable, feature-rich e-commerce solutions.",
-      solution: "Developed a complete platform with cart, checkout, payments, and admin dashboard.",
-      outcome: "Powering 50+ online stores with $2M+ in processed transactions.",
-      category: "Full-Stack",
-      image: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/ecommerce',
-      demo: 'https://ecommerce-demo.com',
-    },
-    {
-      id: 'ml-model',
-      title: 'Machine Learning Pipeline',
-      description: 'Automated ML pipeline for predictive analytics with model versioning and monitoring.',
-      tech: ['Python', 'TensorFlow', 'AWS', 'Docker'],
-      problem: "Manual ML workflows were error-prone and hard to reproduce across environments.",
-      solution: "Built end-to-end automated pipeline from data ingestion to model deployment.",
-      outcome: "Reduced model training time by 60% and improved prediction accuracy by 25%.",
-      category: "AI & DevOps",
-      image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/ml-pipeline',
-      demo: 'https://ml-pipeline-demo.com',
-    },
-    {
-      id: 'telecom-system',
-      title: 'Telecom Management System',
-      description: 'Enterprise system for telecommunications operations, billing, and customer management.',
-      tech: ['Django', 'PostgreSQL', 'React', 'Celery'],
-      problem: "Legacy telecom systems couldn't scale and lacked modern features.",
-      solution: "Developed a modular system for billing, CRM, and network operations with REST API.",
-      outcome: "Managing 100K+ subscribers with 99.9% uptime.",
-      category: "Enterprise",
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
-      github: 'https://github.com/yourusername/telecom',
-      demo: 'https://telecom-demo.com',
-    },
-  ];
+
 
   const filteredProjects = projects.filter((project) =>
     selectedCategories.includes(project.category)
   );
 
-  const getCategoryColors = (color: string) => {
-    const colorMap: Record<string, { dark: string; light: string; shadowDark: string; shadowLight: string }> = {
-      cyan: { 
-        dark: 'rgba(6, 182, 212, 1)', 
-        light: 'rgba(8, 145, 178, 1)',
-        shadowDark: 'rgba(6, 182, 212, 0.3)',
-        shadowLight: 'rgba(6, 182, 212, 0.2)'
-      },
-      purple: { 
-        dark: 'rgba(168, 85, 247, 1)', 
-        light: 'rgba(147, 51, 234, 1)',
-        shadowDark: 'rgba(168, 85, 247, 0.3)',
-        shadowLight: 'rgba(168, 85, 247, 0.2)'
-      },
-      green: { 
-        dark: 'rgba(16, 185, 129, 1)', 
-        light: 'rgba(13, 148, 136, 1)',
-        shadowDark: 'rgba(16, 185, 129, 0.3)',
-        shadowLight: 'rgba(16, 185, 129, 0.2)'
-      },
-      orange: { 
-        dark: 'rgba(251, 146, 60, 1)', 
-        light: 'rgba(239, 68, 68, 1)',
-        shadowDark: 'rgba(251, 146, 60, 0.3)',
-        shadowLight: 'rgba(251, 146, 60, 0.2)'
-      },
-      blue: { 
-        dark: 'rgba(59, 130, 246, 1)', 
-        light: 'rgba(79, 70, 229, 1)',
-        shadowDark: 'rgba(59, 130, 246, 0.3)',
-        shadowLight: 'rgba(59, 130, 246, 0.2)'
-      },
-      violet: { 
-        dark: 'rgba(139, 92, 246, 1)', 
-        light: 'rgba(124, 58, 237, 1)',
-        shadowDark: 'rgba(139, 92, 246, 0.3)',
-        shadowLight: 'rgba(139, 92, 246, 0.2)'
-      },
-    };
-    return colorMap[color] || colorMap.blue;
-  };
+
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>

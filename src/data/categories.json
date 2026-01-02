@@ -1,0 +1,26 @@
+{
+  "AI & Telecom": {
+    "gradient": "from-cyan-500 to-blue-600",
+    "color": "cyan"
+  },
+  "UI/UX": {
+    "gradient": "from-purple-500 to-pink-600",
+    "color": "purple"
+  },
+  "AI & Web": {
+    "gradient": "from-green-500 to-teal-600",
+    "color": "green"
+  },
+  "Full-Stack": {
+    "gradient": "from-orange-500 to-red-600",
+    "color": "orange"
+  },
+  "AI & DevOps": {
+    "gradient": "from-blue-500 to-indigo-600",
+    "color": "blue"
+  },
+  "Enterprise": {
+    "gradient": "from-violet-500 to-purple-600",
+    "color": "violet"
+  }
+}
