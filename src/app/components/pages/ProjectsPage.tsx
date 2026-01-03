@@ -12,7 +12,8 @@ interface ProjectsPageProps {
   isDark: boolean;
   onProjectClick: (projectId: string) => void;
 }
-import { projects, CATEGORIES } from '@/data/index';
+import { projects } from '@/data/index';
+import { CATEGORIES } from '@/data/categories';
 import {  getCategoryColors } from '@/lib/colors';
 
 
