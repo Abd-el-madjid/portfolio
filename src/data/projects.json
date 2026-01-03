@@ -7,7 +7,7 @@
     "problem": "Universities needed a structured platform to manage courses, users, and educational resources.",
     "solution": "Developed an MVC-based web application enabling course management, user roles, and digital learning resources.",
     "outcome": "Delivered a functional academic e-learning system suitable for university-level usage.",
-    "category": "Web / Education",
+    "category": "Web & Education",
     "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop",
     "github": "https://github.com/Abd-el-madjid/E-learning",
     "demo": ""
@@ -20,7 +20,7 @@
     "problem": "Manual monitoring of LTE KPIs is inefficient and fails to detect complex anomalies at scale.",
     "solution": "Built an AI-driven platform using deep learning models to automatically detect anomalies in LTE KPI time-series data.",
     "outcome": "Improved visibility of abnormal network behavior and supported proactive network monitoring.",
-    "category": "AI / Telecom",
+    "category": "AI & Telecom",
     "image": "src/app/assets/projects/rava/rava_1.png",
     "github": "https://github.com/Abd-el-madjid",
     "demo": ""
@@ -46,7 +46,7 @@
     "problem": "Retail businesses require accurate sales forecasting for planning and inventory management.",
     "solution": "Processed historical sales data, selected appropriate ML models, and exposed predictions via a Flask dashboard.",
     "outcome": "Provided insights into sales trends and seasonal patterns.",
-    "category": "Data / AI",
+    "category": "Data & AI",
     "image": "src/app/assets/projects/walmart-forecasting/walmart_1.png",
     "github": "https://github.com/Abd-el-madjid/walmart-store-sales-forecasting",
     "demo": ""
@@ -72,7 +72,7 @@
     "problem": "Password-based authentication systems lack sufficient security.",
     "solution": "Implemented a multi-biometric authentication system combining face, voice, and fingerprint recognition.",
     "outcome": "Demonstrated enhanced authentication reliability using biometric modalities.",
-    "category": "AI / Healthcare",
+    "category": "AI & Healthcare",
     "image": "src/app/assets/projects/secureauth/secureauth_1.png",
     "github": "https://github.com/Abd-el-madjid/SecureAuth-Kivy",
     "demo": ""
@@ -85,7 +85,7 @@
     "problem": "Laboratory operations rely on manual workflows and fragmented data systems.",
     "solution": "Developed a Django-based platform to manage lab operations, users, and data securely.",
     "outcome": "Improved efficiency and reliability of laboratory management processes.",
-    "category": "AI / Healthcare",
+    "category": "AI & Healthcare",
     "image": "src/app/assets/projects/quicklab/quicklab_1.png",
     "github": "https://github.com/Abd-el-madjid/Quick-Lab",
     "demo": ""

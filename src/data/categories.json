@@ -1,25 +1,25 @@
 {
-  "AI / Telecom": {
+  "AI & Telecom": {
     "gradient": "from-cyan-500 to-blue-600",
     "color": "cyan"
   },
-  "AI / NLP": {
+  "AI & NLP": {
     "gradient": "from-purple-500 to-pink-600",
     "color": "purple"
   },
-  "AI / Healthcare": {
+  "AI & Healthcare": {
     "gradient": "from-green-500 to-teal-600",
     "color": "green"
   },
-  "Web / FinTech": {
+  "Web & FinTech": {
     "gradient": "from-orange-500 to-red-600",
     "color": "orange"
   },
-  "Data / AI": {
+  "Data & AI": {
     "gradient": "from-blue-500 to-indigo-600",
     "color": "blue"
   },
-  "Web / Education": {
+  "Web & Education": {
     "gradient": "from-violet-500 to-purple-600",
     "color": "violet"
   },
