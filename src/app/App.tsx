@@ -93,9 +93,15 @@ export default function App() {
         return <HomePage isDark={isDark} onNavigate={navigateTo} onOpenBooking={openBooking} />;
     }
   };
+const isProjectDetail = Boolean(selectedProject);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
+    <div
+  className={`relative min-h-screen ${
+    isProjectDetail ? '' : 'overflow-x-hidden'
+  }`}
+>
+
       {/* Cosmic Background */}
       <CosmicBackground isDark={isDark} />
 

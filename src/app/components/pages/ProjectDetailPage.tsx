@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
-import { ArrowLeft, Github, ExternalLink, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowLeft, Github, ExternalLink, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { projects } from '@/data/index';
 import { CATEGORIES } from '@/data/categories';
 import { getCategoryColors } from '@/lib/colors';
@@ -20,46 +20,76 @@ interface ProjectDetailPageProps {
 export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }: ProjectDetailPageProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [projectImages, setProjectImages] = useState<string[]>([]);
   
   const project = projects.find(p => p.id === projectId);
   const categoryData = project ? CATEGORIES[project.category as keyof typeof CATEGORIES] : null;
   const categoryColors = categoryData ? getCategoryColors(categoryData.color) : null;
 
-  if (!project || !categoryData || !categoryColors) return null;
+  // Load images from project folder
+  useEffect(() => {
+    if (project?.image) {
+      const imagePath = project.image;
+      const folderPath = imagePath.substring(0, imagePath.lastIndexOf('/'));
+     
+      const loadImages = async () => {
+        const images: string[] = [project.image];
+        
+        for (let i = 1; i <= 5; i++) {
+          const testPath = `${folderPath}/${project.id}_${i}.png`;
+          try {
+            const img = new Image();
+            img.src = testPath;
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+            images.push(testPath);
+          } catch {
+            // Image doesn't exist
+          }
+        }
+        
+        setProjectImages(images.length > 1 ? images : [project.image, project.image, project.image]);
+      };
+      
+      loadImages();
+    }
+  }, [project]);
 
-  // Get project images - use the main image multiple times if folder not available
-  const projectImages = [project.image, project.image, project.image];
+  // Auto-scroll images
+  useEffect(() => {
+    if (projectImages.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [projectImages.length]);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
+  };
+
+  if (!project || !categoryData || !categoryColors) return null;
 
   return (
     <div className="min-h-screen px-8 py-32">
       <div className="max-w-[1600px] px-7 mx-auto">
-        {/* Back Button */}
-        <motion.button
-          onClick={onBack}
-          className="flex items-center gap-2 mb-8 px-4 py-2 rounded-xl backdrop-blur-xl"
-          style={{
-            background: isDark
-              ? 'rgba(255, 255, 255, 0.1)'
-              : 'rgba(15, 23, 42, 0.1)',
-          }}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          whileHover={{ scale: 1.05, x: -5 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <ArrowLeft size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
-          <span className={isDark ? 'text-white' : 'text-slate-900'}>Back to Projects</span>
-        </motion.button>
-
-        {/* Mobile Dropdown for Projects (visible on smaller screens) */}
+        {/* Mobile Dropdown for Projects */}
         <div className="xl:hidden mb-6">
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
               <button
                 className={`w-full flex items-center justify-between gap-3 px-6 py-3 rounded-xl border transition-all ${
                   isDark 
-                    ? 'bg-white/10 border-white/10 hover:border-white/20 text-white' 
-                    : 'bg-white border-slate-200 hover:border-slate-300 text-slate-900'
+                    ? 'bg-white/5 border-white/10 hover:border-white/20 text-white backdrop-blur-xl' 
+                    : 'bg-white/80 border-slate-200 hover:border-slate-300 text-slate-900 backdrop-blur-xl'
                 }`}
               >
                 <span className="font-medium">{project.title}</span>
@@ -100,80 +130,119 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
         </div>
 
         {/* 3-Column Layout */}
-        <div className="flex flex-col xl:flex-row gap-6 items-start relative">
-          {/* Left Sidebar - Project List */}
-          <motion.div
-            className="hidden xl:block xl:sticky xl:top-32 w-full xl:w-1/5 backdrop-blur-xl rounded-3xl p-6 shadow-2xl self-start"
-            style={{
-              maxHeight: 'calc(100vh - 10rem)',
-              overflowY: 'auto',
-              background: isDark
-                ? 'rgba(10, 14, 39, 0.8)'
-                : 'rgba(255, 255, 255, 0.8)',
-              border: `1px solid ${
-                isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(3, 105, 161, 0.2)'
-              }`,
-            }}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <h3 className={`text-lg font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              Projects
-            </h3>
-            <div className="space-y-2">
-              {projects.map((proj) => {
-                const isSelected = proj.id === projectId;
-                return (
-                  <button
-                    key={proj.id}
-                    onClick={() => onProjectChange(proj.id)}
-                    className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
-                      isSelected
-                        ? 'border'
-                        : isDark
-                        ? 'text-gray-300 hover:bg-white/5'
-                        : 'text-slate-700 hover:bg-slate-100'
-                    }`}
-                    style={
-                      isSelected
-                        ? {
-                            color: isDark ? categoryColors.dark : categoryColors.light,
-                            borderColor: isDark ? categoryColors.dark : categoryColors.light,
-                          }
-                        : {}
-                    }
-                  >
-                    <div className="text-sm font-medium">{proj.title}</div>
-                  </button>
-                );
-              })}
-            </div>
-          </motion.div>
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_3fr_1fr] gap-6 items-start">
+          {/* Left Sidebar */}
+<aside className="hidden  sticky top-32 xl:block">
+    <motion.div
+      className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto
+                 flex flex-col"
+          style={{
+                  background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+                }}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+              {/* Back Button */}
+              <motion.button
+                onClick={onBack}
+                className="flex items-center gap-2 px-4 py-3 mb-6 transition-all hover:opacity-80"
+                whileHover={{ x: -5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ArrowLeft size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
+                <span className={`font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>Projects</span>
+              </motion.button>
+
+              {/* Divider */}
+              <div 
+                className="h-px mb-4"
+                style={{
+                  background: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+                }}
+              />
+
+              {/* Project List - Scrollable */}
+              <div className="flex-1 overflow-y-auto space-y-2 pr-2 min-h-0">
+                {projects.map((proj) => {
+                  const isSelected = proj.id === projectId;
+                  return (
+                    <button
+                      key={proj.id}
+                      onClick={() => onProjectChange(proj.id)}
+                      className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
+                        isSelected
+                          ? 'border'
+                          : isDark
+                          ? 'text-gray-300 hover:bg-white/5'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                      style={
+                        isSelected
+                          ? {
+                              color: isDark ? categoryColors.dark : categoryColors.light,
+                              borderColor: isDark ? categoryColors.dark : categoryColors.light,
+                            }
+                          : {}
+                      }
+                    >
+                      <div className="text-sm font-medium">{proj.title}</div>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+            
+          </aside>
 
           {/* Center - Images & Description */}
-          <div className="w-full xl:w-3/5 space-y-6 xl:min-h-screen">
+          <main className="space-y-6">
             {/* Images Section */}
             <motion.div
-              className="backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl"
+              className="backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border"
               style={{
-                background: isDark
-                  ? 'rgba(10, 14, 39, 0.8)'
-                  : 'rgba(255, 255, 255, 0.8)',
-                border: `1px solid ${
-                  isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(3, 105, 161, 0.2)'
-                }`,
+                background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
               }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="relative h-[400px] md:h-[500px]">
-                <img
-                  src={projectImages[currentImageIndex]}
+              <div className="relative h-[400px] md:h-[500px] group">
+                <motion.img
+                  key={currentImageIndex}
+                  src={projectImages[currentImageIndex] || project.image}
                   alt={project.title}
                   className="w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
                 />
+
+                {/* Navigation Arrows */}
+                {projectImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                      style={{
+                        background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                      }}
+                    >
+                      <ChevronLeft size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                      style={{
+                        background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                      }}
+                    >
+                      <ChevronRight size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
+                    </button>
+                  </>
+                )}
 
                 {/* Image Indicators */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
@@ -203,14 +272,10 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
 
             {/* Description Section */}
             <motion.div
-              className="backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl"
+              className="backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl border"
               style={{
-                background: isDark
-                  ? 'rgba(10, 14, 39, 0.8)'
-                  : 'rgba(255, 255, 255, 0.8)',
-                border: `1px solid ${
-                  isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(3, 105, 161, 0.2)'
-                }`,
+                background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
               }}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -330,108 +395,93 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                 )}
               </div>
             </motion.div>
-          </div>
+          </main>
 
-          {/* Right Sidebar - Technologies & Tags */}
-          <motion.div
-            className="xl:sticky xl:top-32 w-full xl:w-1/5 backdrop-blur-xl rounded-3xl p-6 shadow-2xl self-start"
-            style={{
-              maxHeight: 'calc(100vh - 10rem)',
-              overflowY: 'auto',
-              background: isDark
-                ? 'rgba(10, 14, 39, 0.8)'
-                : 'rgba(255, 255, 255, 0.8)',
-              border: `1px solid ${
-                isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(3, 105, 161, 0.2)'
-              }`,
-            }}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            {/* Technologies */}
-            <div className="mb-8">
-              <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Technologies
-              </h3>
-              <div className="flex flex-wrap gap-2 items-center">
-                {project.tech.map((tech: string) => (
-                  <span
-                    key={tech}
-                    className="px-3 py-1 text-sm font-medium rounded-lg border transition-all hover:scale-105"
-                    style={{
-                      borderColor: isDark ? categoryColors.dark : categoryColors.light,
-                      color: isDark ? categoryColors.dark : categoryColors.light,
-                      backgroundColor: 'transparent',
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Category */}
-            <div className="mb-8">
-              <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Category
-              </h3>
-              <span
-                className={`inline-block px-4 py-1.5 text-sm font-medium rounded-lg bg-gradient-to-r ${categoryData.gradient} text-white`}
+          {/* Right Sidebar */}
+          <aside className="hidden sticky top-32 xl:block">
+              <motion.div
+                className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto"
+                style={{
+                  background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+                }}
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
               >
-                {project.category}
-              </span>
-            </div>
-
-            {/* Project Links */}
-            <div>
-              <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                Links
-              </h3>
-              <div className="space-y-3">
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm flex items-center gap-2 transition-colors"
-                    style={{
-                      color: isDark ? categoryColors.dark : categoryColors.light,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.textDecoration = 'underline';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.textDecoration = 'none';
-                    }}
-                  >
-                    <Github size={16} />
-                    Repository
-                  </a>
-                )}
-                {project.demo && (
-                  <a
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm flex items-center gap-2 transition-colors"
-                    style={{
-                      color: isDark ? categoryColors.dark : categoryColors.light,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.textDecoration = 'underline';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.textDecoration = 'none';
-                    }}
-                  >
-                    <ExternalLink size={16} />
-                    Live Demo
-                  </a>
-                )}
+              {/* Technologies */}
+              <div className="mb-8">
+                <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Technologies
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((tech: string) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 text-sm font-medium rounded-lg border transition-all hover:scale-105"
+                      style={{
+                        borderColor: isDark ? categoryColors.dark : categoryColors.light,
+                        color: isDark ? categoryColors.dark : categoryColors.light,
+                        backgroundColor: 'transparent',
+                      }}
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          </motion.div>
+
+              {/* Category */}
+              <div className="mb-8">
+                <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Category
+                </h3>
+                <span
+                  className={`inline-block px-4 py-1.5 text-sm font-medium rounded-lg bg-gradient-to-r ${categoryData.gradient} text-white`}
+                >
+                  {project.category}
+                </span>
+              </div>
+
+              {/* Project Links */}
+              <div>
+                <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  Links
+                </h3>
+                <div className="space-y-3">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm flex items-center gap-2 transition-colors hover:underline"
+                      style={{
+                        color: isDark ? categoryColors.dark : categoryColors.light,
+                      }}
+                    >
+                      <Github size={16} />
+                      Repository
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm flex items-center gap-2 transition-colors hover:underline"
+                      style={{
+                        color: isDark ? categoryColors.dark : categoryColors.light,
+                      }}
+                    >
+                      <ExternalLink size={16} />
+                      Live Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          
+          </aside>
         </div>
       </div>
     </div>
