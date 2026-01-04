@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Calendar, Download } from 'lucide-react';
 import { IdentityBadge } from '../IdentityBadge';
 import React from 'react';
-import CV_LINK from '../../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
+
 interface HomePageProps {
   isDark: boolean;
   onNavigate: (page: string) => void;
@@ -11,6 +11,14 @@ interface HomePageProps {
 
 export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
   const name = "Kahoul  Abd  El  Madjid";
+  
+  const handleBookingClick = () => {
+    console.log('HomePage - Book a Meeting button clicked');
+    console.log('HomePage - onOpenBooking function:', onOpenBooking);
+    console.log('HomePage - Calling onOpenBooking...');
+    onOpenBooking();
+    console.log('HomePage - onOpenBooking called successfully');
+  };
   
   return (
     <section className="min-h-screen flex items-center justify-center px-8 pt-32 pb-20">
@@ -44,10 +52,8 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
               {name.split('').map((char, index) => {
                 const [isHovered, setIsHovered] = React.useState(false);
                 
-                // Generate random number of stars (between 8-15) for each character
                 const starCount = React.useMemo(() => Math.floor(Math.random() * 8) + 8, []);
                 
-                // Generate random positions for splitting stars
                 const splitPositions = React.useMemo(() => {
                   const positions = [];
                   for (let i = 0; i < starCount; i++) {
@@ -74,7 +80,6 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
                       position: 'relative',
                     }}
                   >
-                    {/* Original Character - stays visible until hover */}
                     <motion.span
                       style={{
                         display: 'inline-block',
@@ -91,7 +96,6 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
                       {char}
                     </motion.span>
                     
-                    {/* Exploding Stars (on hover only) */}
                     {char !== ' ' && splitPositions.map((pos, i) => (
                       <motion.span
                         key={i}
@@ -206,7 +210,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             </motion.button>
 
             <motion.button
-              onClick={onOpenBooking}
+              onClick={handleBookingClick}
               className="flex items-center gap-3 px-8 py-4 rounded-2xl backdrop-blur-xl shadow-lg"
               style={{
                 background: isDark
@@ -226,10 +230,9 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             </motion.button>
 
             <motion.a
-              href= {CV_LINK}
+              href="/path-to-your-cv.pdf"
               download
               target="_blank"
-
               className="flex items-center gap-3 px-8 py-4 rounded-2xl backdrop-blur-xl shadow-lg"
               style={{
                 background: isDark
