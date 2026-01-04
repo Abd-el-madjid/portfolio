@@ -10,15 +10,16 @@
 
 // Import all assets dynamically using Vite's glob
 // Match all images in any folder
+// NOTE: Paths must be relative to THIS file (src/utils/pageAssets.ts)
 const allAssets = import.meta.glob(
-  '../assets/**/*.png',
+  '../assets/**/*.{png,jpg,jpeg,gif,svg,webp}',
   {
     eager: true,
     import: 'default',
   }
 ) as Record<string, string>;
 
-
+console.log('All assets loaded:', Object.keys(allAssets));
 
 // Import projects data to get main images
 import projectsData from '../../data/projects.json';
@@ -50,7 +51,7 @@ export function getProjectsPageAssets(): string[] {
   projectsData.forEach(project => {
     // Only load images that start with 'src/app/assets' (local images)
     if (project.image && project.image.startsWith('src/app/assets')) {
-      // Convert path to import format
+      // Convert path to relative format for matching
       const imagePath = project.image.replace('src/app/assets', '../assets');
       
       // Find matching asset
@@ -73,12 +74,17 @@ export function getProjectAssets(projectId: string): string[] {
   const folderPath = `../assets/projects/${projectId}/`;
   const projectAssets: string[] = [];
 
+  console.log('Looking for project assets with path:', folderPath);
+  console.log('Available asset paths:', Object.keys(allAssets));
+
   Object.entries(allAssets).forEach(([path, url]) => {
     if (path.startsWith(folderPath)) {
+      console.log('Found matching asset:', path);
       projectAssets.push(url);
     }
   });
 
+  console.log('Total project assets found:', projectAssets.length);
   return projectAssets;
 }
 

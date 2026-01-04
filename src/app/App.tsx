@@ -17,10 +17,13 @@ import { usePageAssetLoader } from './hooks/usePageAssetLoader';
 import { getPageAssets, getProjectsPageAssets, getProjectAssets } from './utils/pageAssets';
 
 // Wrapper component for project details to get projectId from URL
-function ProjectDetailWrapper({ isDark }: { isDark: boolean }) {
+function ProjectDetailWrapper({ isDark, projectAssets }: { isDark: boolean; projectAssets?: string[] }) {
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split('/projects/')[1];
+
+  console.log('ProjectDetailWrapper - projectId:', projectId);
+  console.log('ProjectDetailWrapper - projectAssets:', projectAssets);
 
   const handleBack = () => {
     navigate('/projects');
@@ -36,6 +39,7 @@ function ProjectDetailWrapper({ isDark }: { isDark: boolean }) {
       projectId={projectId}
       onBack={handleBack}
       onProjectChange={handleProjectChange}
+      preloadedAssets={projectAssets || []}
     />
   );
 }
@@ -67,7 +71,9 @@ export default function App() {
   const getCurrentAssets = () => {
     if (projectId) {
       // Load ALL images for this specific project
-      return getProjectAssets(projectId);
+      const assets = getProjectAssets(projectId);
+      console.log('Loading assets for project:', projectId, assets);
+      return assets;
     } else if (currentPage === 'projects') {
       // Load ONLY main project images
       return getProjectsPageAssets();
@@ -217,7 +223,7 @@ export default function App() {
           />
           <Route 
             path="/projects/:projectId" 
-            element={<ProjectDetailWrapper isDark={isDark} />} 
+            element={<ProjectDetailWrapper isDark={isDark} projectAssets={currentAssets} />} 
           />
         </Routes>
       </main>

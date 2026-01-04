@@ -15,9 +15,16 @@ interface ProjectDetailPageProps {
   projectId: string;
   onBack: () => void;
   onProjectChange: (projectId: string) => void;
+  preloadedAssets: string[]; // NEW: Receive preloaded assets
 }
 
-export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }: ProjectDetailPageProps) {
+export function ProjectDetailPage({ 
+  isDark, 
+  projectId, 
+  onBack, 
+  onProjectChange, 
+  preloadedAssets 
+}: ProjectDetailPageProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [projectImages, setProjectImages] = useState<string[]>([]);
@@ -26,47 +33,49 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
   const categoryData = project ? CATEGORIES[project.category as keyof typeof CATEGORIES] : null;
   const categoryColors = categoryData ? getCategoryColors(categoryData.color) : null;
 
-  // Load images from project folder
+  // Use preloaded assets instead of manually loading
   useEffect(() => {
-    if (project?.image) {
-      const imagePath = project.image;
-      const folderPath = imagePath.substring(0, imagePath.lastIndexOf('/'));
-     
-      const loadImages = async () => {
-        const images: string[] = [project.image];
+    console.log('ProjectDetailPage - Project ID:', projectId);
+    console.log('ProjectDetailPage - Preloaded assets:', preloadedAssets);
+    console.log('ProjectDetailPage - Project main image:', project?.image);
+
+    if (preloadedAssets.length > 0) {
+      // Sort to ensure main image is first
+      const sortedAssets = [...preloadedAssets].sort((a, b) => {
+        // Main image (without number suffix) should be first
+        const aHasNumber = /_\d+\./.test(a);
+        const bHasNumber = /_\d+\./.test(b);
         
-        for (let i = 1; i <= 5; i++) {
-          const testPath = `${folderPath}/${project.id}_${i}.png`;
-          try {
-            const img = new Image();
-            img.src = testPath;
-            await new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-            });
-            images.push(testPath);
-          } catch {
-            // Image doesn't exist
-          }
+        if (!aHasNumber && bHasNumber) return -1;
+        if (aHasNumber && !bHasNumber) return 1;
+        
+        // If both have numbers, sort by number
+        const aMatch = a.match(/_(\d+)\./);
+        const bMatch = b.match(/_(\d+)\./);
+        
+        if (aMatch && bMatch) {
+          return parseInt(aMatch[1]) - parseInt(bMatch[1]);
         }
         
-        setProjectImages(images.length > 1 ? images : [project.image]);
-      };
-      
-      loadImages();
-    }
-  }, [project]);
+        return 0;
+      });
 
-  // Auto-scroll images
-  // useEffect(() => {
-  //   if (projectImages.length <= 1) return;
-    
-  //   const interval = setInterval(() => {
-  //     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
-  //   }, 5000);
-    
-  //   return () => clearInterval(interval);
-  // }, [projectImages.length]);
+      console.log('Sorted assets:', sortedAssets);
+      setProjectImages(sortedAssets);
+    } else if (project?.image) {
+      // Fallback to main image if no preloaded assets
+      console.log('Using fallback main image');
+      setProjectImages([project.image]);
+    } else {
+      console.warn('No images found for project:', projectId);
+      setProjectImages([]);
+    }
+  }, [preloadedAssets, projectId, project]);
+
+  // Reset image index when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [projectId]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
@@ -77,7 +86,16 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
   };
 
   if (!project || !categoryData || !categoryColors) return null;
-
+  // Auto-scroll images
+  useEffect(() => {
+    if (projectImages.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [projectImages.length]);
   return (
     <div className="min-h-screen px-8 py-32">
       <div className="max-w-[1600px] px-7 mx-auto">
@@ -132,18 +150,18 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
         {/* 3-Column Layout */}
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_3fr_1fr] gap-6 items-start">
           {/* Left Sidebar */}
-<aside className="hidden  sticky top-32 xl:block">
-    <motion.div
-      className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto
-                 flex flex-col"
-          style={{
-                  background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
-                }}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-              >
+          <aside className="hidden sticky top-32 xl:block">
+            <motion.div
+              className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto
+                         flex flex-col"
+              style={{
+                background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+              }}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
               {/* Back Button */}
               <motion.button
                 onClick={onBack}
@@ -193,7 +211,6 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                 })}
               </div>
             </motion.div>
-            
           </aside>
 
           {/* Center - Images & Description */}
@@ -214,7 +231,7 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                   key={currentImageIndex}
                   src={projectImages[currentImageIndex] || project.image}
                   alt={project.title}
-                  className="w-full h-full  sm:object-contain object-cover "
+                  className="w-full h-full sm:object-contain object-cover"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
@@ -245,28 +262,30 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                 )}
 
                 {/* Image Indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {projectImages.map((_: any, index: number) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(index)}
-                      className="transition-all"
-                      style={{
-                        width: index === currentImageIndex ? '32px' : '8px',
-                        height: '8px',
-                        borderRadius: '4px',
-                        background:
-                          index === currentImageIndex
-                            ? isDark
-                              ? '#fff'
-                              : '#0f172a'
-                            : isDark
-                            ? 'rgba(255, 255, 255, 0.3)'
-                            : 'rgba(15, 23, 42, 0.3)',
-                      }}
-                    />
-                  ))}
-                </div>
+                {projectImages.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                    {projectImages.map((_: any, index: number) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className="transition-all"
+                        style={{
+                          width: index === currentImageIndex ? '32px' : '8px',
+                          height: '8px',
+                          borderRadius: '4px',
+                          background:
+                            index === currentImageIndex
+                              ? isDark
+                                ? '#fff'
+                                : '#0f172a'
+                              : isDark
+                              ? 'rgba(255, 255, 255, 0.3)'
+                              : 'rgba(15, 23, 42, 0.3)',
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </motion.div>
 
@@ -399,16 +418,16 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
 
           {/* Right Sidebar */}
           <aside className="hidden sticky top-32 xl:block">
-              <motion.div
-                className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto"
-                style={{
-                  background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
-                }}
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-              >
+            <motion.div
+              className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto"
+              style={{
+                background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+              }}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
               {/* Technologies */}
               <div className="mb-8">
                 <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -480,7 +499,6 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                 </div>
               </div>
             </motion.div>
-          
           </aside>
         </div>
       </div>
