@@ -8,7 +8,6 @@
     "solution": "Developed an MVC-based web application enabling course management, user roles, and digital learning resources.",
     "outcome": "Delivered a functional academic e-learning system suitable for university-level usage.",
     "category": "Web & Education",
-    "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop",
     "github": "https://github.com/Abd-el-madjid/E-learning",
     "demo": ""
   },
@@ -21,7 +20,6 @@
     "solution": "Built an AI-driven platform using deep learning models to automatically detect anomalies in LTE KPI time-series data.",
     "outcome": "Improved visibility of abnormal network behavior and supported proactive network monitoring.",
     "category": "AI & Telecom",
-    "image": "src/app/assets/projects/rava/rava_1.png",
     "github": "https://github.com/Abd-el-madjid",
     "demo": ""
   },
@@ -34,7 +32,6 @@
     "solution": "Developed a mobile app allowing users to submit insurance requests, manage claims, and handle payments remotely.",
     "outcome": "Demonstrated a mobile-first approach to digital insurance services.",
     "category": "Mobile Apps",
-    "image": "src/app/assets/projects/assurini/assurini_1.png",
     "github": "https://github.com/Abd-el-madjid/Assurini",
     "demo": ""
   },
@@ -47,7 +44,6 @@
     "solution": "Processed historical sales data, selected appropriate ML models, and exposed predictions via a Flask dashboard.",
     "outcome": "Provided insights into sales trends and seasonal patterns.",
     "category": "Data & AI",
-    "image": "src/app/assets/projects/walmart-forecasting/walmart_1.png",
     "github": "https://github.com/Abd-el-madjid/walmart-store-sales-forecasting",
     "demo": ""
   },
@@ -60,7 +56,6 @@
     "solution": "Built a mobile app enabling users to submit registration requests and receive status notifications.",
     "outcome": "Digitized and simplified company registration tracking.",
     "category": "Mobile Apps",
-    "image": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800&h=600&fit=crop",
     "github": "https://github.com/Abd-el-madjid/RegiterCom",
     "demo": ""
   },
@@ -73,7 +68,6 @@
     "solution": "Implemented a multi-biometric authentication system combining face, voice, and fingerprint recognition.",
     "outcome": "Demonstrated enhanced authentication reliability using biometric modalities.",
     "category": "AI & Healthcare",
-    "image": "src/app/assets/projects/secureauth/secureauth_1.png",
     "github": "https://github.com/Abd-el-madjid/SecureAuth-Kivy",
     "demo": ""
   },
@@ -86,7 +80,6 @@
     "solution": "Developed a Django-based platform to manage lab operations, users, and data securely.",
     "outcome": "Improved efficiency and reliability of laboratory management processes.",
     "category": "AI & Healthcare",
-    "image": "src/app/assets/projects/quicklab/quicklab_1.png",
     "github": "https://github.com/Abd-el-madjid/Quick-Lab",
     "demo": ""
   }
