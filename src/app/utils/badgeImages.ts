@@ -5,7 +5,8 @@
  */
 
 // Dynamically import all badge images in the folder
-const badgeModules = import.meta.glob('../assets/home/badge_pic_*.jpg', { eager: true });
+const badgeModules = import.meta.glob(
+  '../assets/home/badge_pic_*.{png,jpg,jpeg,webp}', { eager: true });
 
 // Convert imported modules to an array of image URLs
 export const badgeImages: string[] = Object.values(badgeModules).map(
