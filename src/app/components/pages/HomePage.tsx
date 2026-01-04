@@ -51,7 +51,8 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             >
               {name.split('').map((char, index) => {
                 const [isHovered, setIsHovered] = React.useState(false);
-                
+                const [isClicked, setIsClicked] = React.useState(false);
+
                 const starCount = React.useMemo(() => Math.floor(Math.random() * 8) + 8, []);
                 
                 const splitPositions = React.useMemo(() => {
@@ -75,6 +76,10 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
                     className="relative"
                     onHoverStart={() => setIsHovered(true)}
                     onHoverEnd={() => setIsHovered(false)}
+                    onClick={() => {
+                      setIsClicked(true);
+                      setTimeout(() => setIsClicked(false), 600);
+                    }}
                     style={{
                       display: 'inline-block',
                       position: 'relative',
