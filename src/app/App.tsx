@@ -1,6 +1,6 @@
 // File Location: src/App.tsx
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect,lazy, Suspense  } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { CosmicBackground } from './components/CosmicBackground';
 import { CustomCursorOptimized } from './components/CustomCursorOptimized';
@@ -9,19 +9,32 @@ import { MobileMenu } from './components/MobileMenu';
 import { HomePage } from './components/pages/HomePage';
 import { AboutPage } from './components/pages/AboutPage';
 import { ServicesPage } from './components/pages/ServicesPage';
-import { ProjectsPage } from './components/pages/ProjectsPage';
-import { ProjectDetailPage } from './components/pages/ProjectDetailPage';
 import { BookingOverlayImproved } from './components/BookingOverlayImproved';
 import { LoadingScreen } from './components/LoadingScreen';
 import { useImagePreloader, getCriticalImages } from './hooks/useImagePreloader';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 
+
+  // ✅ lazy with named export
+  const ProjectsPage = lazy(() =>
+    import('./components/pages/ProjectsPage').then(module => ({
+      default: module.ProjectsPage,
+    }))
+  )
+
+  const ProjectDetailPage = lazy(() =>
+    import('./components/pages/ProjectDetailPage').then(module => ({
+      default: module.ProjectDetailPage,
+    }))
+)
+  
 // Wrapper component for project details to get projectId from URL
 function ProjectDetailWrapper({ isDark }: { isDark: boolean }) {
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split('/projects/')[1];
+
 
   const handleBack = () => {
     navigate('/projects');
@@ -156,6 +169,8 @@ export default function App() {
 
       {/* Main Content - Router */}
       <main>
+          <Suspense fallback={<LoadingScreen isDark={isDark} progress={100} />}>
+
         <Routes>
           <Route 
             path="/" 
@@ -188,7 +203,8 @@ export default function App() {
             path="/projects/:projectId" 
             element={<ProjectDetailWrapper isDark={isDark} />} 
           />
-        </Routes>
+          </Routes>
+          </Suspense>
       </main>
 
       {/* Booking Overlay */}
