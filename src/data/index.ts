@@ -1,6 +1,9 @@
 import projectsJson from './projects.json';
-import { CATEGORIES } from './categories'; // correct import
-import { Project, CategoryData } from '@/types';
+import { CATEGORIES } from './categories';
+import { Project } from '@/types';
+import { getProjectMainImage } from '@/lib/projectImages';
 
-// Typed exports
-export const projects = projectsJson as Project[];
+export const projects: Project[] = projectsJson.map((project) => ({
+  ...project,
+  image: getProjectMainImage(project.id),
+}));
