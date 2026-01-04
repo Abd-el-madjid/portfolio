@@ -40,7 +40,7 @@ function ProjectDetailWrapper({ isDark, projectAssets }: { isDark: boolean; proj
       projectId={projectId}
       onBack={handleBack}
       onProjectChange={handleProjectChange}
-      preloadedAssets={projectAssets || []}
+      // preloadedAssets={projectAssets || []}
     />
   );
 }
