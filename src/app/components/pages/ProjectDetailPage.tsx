@@ -50,7 +50,7 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
           }
         }
         
-        setProjectImages(images.length > 1 ? images : [project.image, project.image, project.image]);
+        setProjectImages(images.length > 1 ? images : [project.image]);
       };
       
       loadImages();
@@ -58,15 +58,15 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
   }, [project]);
 
   // Auto-scroll images
-  useEffect(() => {
-    if (projectImages.length <= 1) return;
+  // useEffect(() => {
+  //   if (projectImages.length <= 1) return;
     
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
-    }, 5000);
+  //   const interval = setInterval(() => {
+  //     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  //   }, 5000);
     
-    return () => clearInterval(interval);
-  }, [projectImages.length]);
+  //   return () => clearInterval(interval);
+  // }, [projectImages.length]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
@@ -187,7 +187,7 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                           : {}
                       }
                     >
-                      <div className="text-sm font-medium">{proj.title}</div>
+                      <div className="text-sm font-medium">{proj.id}</div>
                     </button>
                   );
                 })}
@@ -214,7 +214,7 @@ export function ProjectDetailPage({ isDark, projectId, onBack, onProjectChange }
                   key={currentImageIndex}
                   src={projectImages[currentImageIndex] || project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full  sm:object-contain object-cover "
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
