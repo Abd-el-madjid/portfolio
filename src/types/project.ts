@@ -8,7 +8,7 @@ export interface Project {
   solution: string;
   outcome: string;
   category: string;
-  image: string;
   github: string;
   demo: string;
+  image: string;
 }
