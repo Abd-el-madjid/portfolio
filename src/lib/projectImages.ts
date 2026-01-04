@@ -14,5 +14,5 @@ export const getProjectImages = (id: string): string[] => {
 };
 
 export const getProjectMainImage = (id: string): string => {
-  return getProjectImages(id)[0] ?? '';
+  return .filter(path => path.includes(`/${id}/${id}_`)).png ;
 };
