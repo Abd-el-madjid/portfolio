@@ -15,7 +15,6 @@ interface ProjectDetailPageProps {
   projectId: string;
   onBack: () => void;
   onProjectChange: (projectId: string) => void;
-  preloadedAssets: string[]; // NEW: Receive preloaded assets
 }
 
 export function ProjectDetailPage({ 
@@ -23,59 +22,18 @@ export function ProjectDetailPage({
   projectId, 
   onBack, 
   onProjectChange, 
-  preloadedAssets 
 }: ProjectDetailPageProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [projectImages, setProjectImages] = useState<string[]>([]);
   
   const project = projects.find(p => p.id === projectId);
   const categoryData = project ? CATEGORIES[project.category as keyof typeof CATEGORIES] : null;
   const categoryColors = categoryData ? getCategoryColors(categoryData.color) : null;
 
-  // Use preloaded assets instead of manually loading
-  useEffect(() => {
-    console.log('ProjectDetailPage - Project ID:', projectId);
-    console.log('ProjectDetailPage - Preloaded assets:', preloadedAssets);
-    console.log('ProjectDetailPage - Project main image:', project?.image);
+  
 
-    if (preloadedAssets.length > 0) {
-      // Sort to ensure main image is first
-      const sortedAssets = [...preloadedAssets].sort((a, b) => {
-        // Main image (without number suffix) should be first
-        const aHasNumber = /_\d+\./.test(a);
-        const bHasNumber = /_\d+\./.test(b);
-        
-        if (!aHasNumber && bHasNumber) return -1;
-        if (aHasNumber && !bHasNumber) return 1;
-        
-        // If both have numbers, sort by number
-        const aMatch = a.match(/_(\d+)\./);
-        const bMatch = b.match(/_(\d+)\./);
-        
-        if (aMatch && bMatch) {
-          return parseInt(aMatch[1]) - parseInt(bMatch[1]);
-        }
-        
-        return 0;
-      });
+const projectImages = project?.images ?? [];
 
-      console.log('Sorted assets:', sortedAssets);
-      setProjectImages(sortedAssets);
-    } else if (project?.image) {
-      // Fallback to main image if no preloaded assets
-      console.log('Using fallback main image');
-      setProjectImages([project.image]);
-    } else {
-      console.warn('No images found for project:', projectId);
-      setProjectImages([]);
-    }
-  }, [preloadedAssets, projectId, project]);
-
-  // Reset image index when project changes
-  useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [projectId]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
@@ -87,15 +45,16 @@ export function ProjectDetailPage({
 
   if (!project || !categoryData || !categoryColors) return null;
   // Auto-scroll images
-  useEffect(() => {
-    if (projectImages.length <= 1) return;
-    
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [projectImages.length]);
+useEffect(() => {
+  if (projectImages.length <= 1) return;
+
+  const interval = setInterval(() => {
+    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [projectImages.length]);
+
   return (
     <div className="min-h-screen px-8 py-32">
       <div className="max-w-[1600px] px-7 mx-auto">
@@ -229,7 +188,7 @@ export function ProjectDetailPage({
               <div className="relative h-[400px] md:h-[500px] group">
                 <motion.img
                   key={currentImageIndex}
-                  src={projectImages[currentImageIndex] || project.image}
+                  src={projectImages[currentImageIndex]}
                   alt={project.title}
                   className="w-full h-full sm:object-contain object-cover"
                   initial={{ opacity: 0 }}
