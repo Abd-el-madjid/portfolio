@@ -13,18 +13,15 @@ import { ProjectsPage } from './components/pages/ProjectsPage';
 import { ProjectDetailPage } from './components/pages/ProjectDetailPage';
 import { BookingOverlayImproved } from './components/BookingOverlayImproved';
 import { LoadingScreen } from './components/LoadingScreen';
-import { usePageAssetLoader } from './hooks/usePageAssetLoader';
-import { getPageAssets, getProjectsPageAssets, getProjectAssets } from './utils/pageAssets';
-import { SpeedInsights } from "@vercel/speed-insights/react"
-import { Analytics } from "@vercel/analytics/react"
+import { useImagePreloader, getCriticalImages } from './hooks/useImagePreloader';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
+
 // Wrapper component for project details to get projectId from URL
-function ProjectDetailWrapper({ isDark, projectAssets }: { isDark: boolean; projectAssets?: string[] }) {
+function ProjectDetailWrapper({ isDark }: { isDark: boolean }) {
   const navigate = useNavigate();
   const location = useLocation();
   const projectId = location.pathname.split('/projects/')[1];
-
-  console.log('ProjectDetailWrapper - projectId:', projectId);
-  console.log('ProjectDetailWrapper - projectAssets:', projectAssets);
 
   const handleBack = () => {
     navigate('/projects');
@@ -40,7 +37,6 @@ function ProjectDetailWrapper({ isDark, projectAssets }: { isDark: boolean; proj
       projectId={projectId}
       onBack={handleBack}
       onProjectChange={handleProjectChange}
-      // preloadedAssets={projectAssets || []}
     />
   );
 }
@@ -49,49 +45,29 @@ export default function App() {
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [previousProject, setPreviousProject] = useState<string | null>(null);
   
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Determine current page and project from URL
+  // Preload critical images (main project images)
+  // Change to getAllProjectImages() to preload ALL images (slower but more comprehensive)
+  const { isLoading, progress, loadedCount, totalCount } = useImagePreloader(
+    getCriticalImages(),
+    {
+      minLoadTime: 800, // Minimum loading screen display time
+      onProgress: (prog) => {
+        if (import.meta.env.DEV) {
+          console.log(`Loading progress: ${prog}%`);
+        }
+      }
+    }
+  );
+
+  // Determine current page from URL
   const pathname = location.pathname;
-  const isProjectDetail = pathname.startsWith('/projects/') && pathname !== '/projects';
-  const projectId = isProjectDetail ? pathname.split('/projects/')[1] : null;
-  
   const currentPage = pathname === '/' ? 'home' 
     : pathname.startsWith('/projects') ? 'projects'
     : pathname.replace('/', '');
-
-  /**
-   * Smart Asset Loading Logic:
-   * - Regular pages: Load from assets/{pageName}/
-   * - Projects page: Load ONLY main images from JSON
-   * - Project detail: Load ALL images from assets/projects/{projectId}/
-   */
-  const getCurrentAssets = () => {
-    if (projectId) {
-      // Load ALL images for this specific project
-      const assets = getProjectAssets(projectId);
-      console.log('Loading assets for project:', projectId, assets);
-      return assets;
-    } else if (currentPage === 'projects') {
-      // Load ONLY main project images
-      return getProjectsPageAssets();
-    } else {
-      // Load page folder assets (home, about, services)
-      return getPageAssets(currentPage);
-    }
-  };
-
-  const currentAssets = getCurrentAssets();
-  
-  // Load assets with smart caching
-  const { isLoading, progress, clearCache } = usePageAssetLoader(
-    currentAssets,
-    true,
-    projectId || undefined // Cache key for project details
-  );
 
   // Apply theme class to document
   useEffect(() => {
@@ -124,22 +100,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
 
-  /**
-   * Clear project assets cache when leaving project detail
-   * This prevents memory waste from unused project images
-   */
+  // Log loading stats in development
   useEffect(() => {
-    // When leaving a project detail (going to another page)
-    if (previousProject && !projectId && currentPage !== 'projects') {
-      clearCache();
-      setPreviousProject(null);
+    if (import.meta.env.DEV && !isLoading) {
+      console.log(`✅ Loaded ${loadedCount}/${totalCount} images successfully`);
     }
-    
-    // Update previous project tracker
-    if (projectId) {
-      setPreviousProject(projectId);
-    }
-  }, [projectId, currentPage, previousProject, clearCache]);
+  }, [isLoading, loadedCount, totalCount]);
 
   const toggleTheme = () => setIsDark(!isDark);
 
@@ -156,17 +122,13 @@ export default function App() {
     navigate(`/projects/${projectId}`);
   };
 
-  // Show loading screen when loading assets
+  // Show loading screen while preloading assets
   if (isLoading) {
     return <LoadingScreen isDark={isDark} progress={progress} />;
   }
 
   return (
-    <div
-      className={`relative min-h-screen ${
-        isProjectDetail ? '' : 'overflow-x-hidden'
-      }`}
-    >
+    <div className="relative min-h-screen">
       {/* Cosmic Background */}
       <CosmicBackground isDark={isDark} />
 
@@ -224,7 +186,7 @@ export default function App() {
           />
           <Route 
             path="/projects/:projectId" 
-            element={<ProjectDetailWrapper isDark={isDark} projectAssets={currentAssets} />} 
+            element={<ProjectDetailWrapper isDark={isDark} />} 
           />
         </Routes>
       </main>
@@ -254,6 +216,10 @@ export default function App() {
           </p>
         </div>
       </footer>
+
+      {/* Vercel Analytics */}
+      <SpeedInsights />
+      <Analytics />
     </div>
   );
 }

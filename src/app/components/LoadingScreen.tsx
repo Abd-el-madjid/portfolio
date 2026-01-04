@@ -110,7 +110,7 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
 
         {/* Loading Text */}
         <motion.h2
-          className={`text-3xl md:text-4xl mb-8 font-bold ${
+          className={`text-3xl md:text-4xl mb-8 mt-9 font-bold ${
             isDark ? 'text-white' : 'text-slate-900'
           }`}
           animate={{
@@ -193,6 +193,7 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
             {Math.floor(progress)}%
           </motion.div>
         </div>
+<div className="absolute top-[50px] left-0 right-0 flex items-center justify-center">
 
         {/* Orbiting Particles */}
         {[...Array(8)].map((_, i) => {
@@ -226,11 +227,12 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
                 repeat: Infinity,
                 ease: 'linear',
               }}
-            />
+              />
+             
           );
         })}
       </div>
-
+ </div>
       {/* Bottom Text */}
       <motion.div
         className={`absolute bottom-12 text-sm ${

@@ -1,6 +1,8 @@
+// File Location: src/components/pages/ProjectDetailPage.tsx
+
 import { motion } from 'motion/react';
 import { ArrowLeft, Github, ExternalLink, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { projects } from '@/data/index';
 import { CATEGORIES } from '@/data/categories';
 import { getCategoryColors } from '@/lib/colors';
@@ -26,14 +28,43 @@ export function ProjectDetailPage({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
-  const project = projects.find(p => p.id === projectId);
-  const categoryData = project ? CATEGORIES[project.category as keyof typeof CATEGORIES] : null;
-  const categoryColors = categoryData ? getCategoryColors(categoryData.color) : null;
-
+  // Memoize project lookup to prevent unnecessary recalculations
+  const project = useMemo(
+    () => projects.find(p => p.id === projectId),
+    [projectId]
+  );
   
+  const categoryData = useMemo(
+    () => project ? CATEGORIES[project.category as keyof typeof CATEGORIES] : null,
+    [project]
+  );
+  
+  const categoryColors = useMemo(
+    () => categoryData ? getCategoryColors(categoryData.color) : null,
+    [categoryData]
+  );
 
-const projectImages = project?.images ?? [];
+  // Memoize project images to prevent recalculation on every render
+  const projectImages = useMemo(
+    () => project?.images ?? [],
+    [project?.images]
+  );
 
+  // Reset image index when project changes
+  useEffect(() => {
+    setCurrentImageIndex(0);
+  }, [projectId]);
+
+  // Auto-scroll images every 5 seconds
+  useEffect(() => {
+    if (projectImages.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [projectImages.length]);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
@@ -43,17 +74,16 @@ const projectImages = project?.images ?? [];
     setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
   };
 
-  if (!project || !categoryData || !categoryColors) return null;
-  // Auto-scroll images
-useEffect(() => {
-  if (projectImages.length <= 1) return;
-
-  const interval = setInterval(() => {
-    setCurrentImageIndex((prev) => (prev + 1) % projectImages.length);
-  }, 5000);
-
-  return () => clearInterval(interval);
-}, [projectImages.length]);
+  // Early return if project not found
+  if (!project || !categoryData || !categoryColors) {
+    return (
+      <div className="min-h-screen px-8 py-32 flex items-center justify-center">
+        <div className={`text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          Project not found
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen px-8 py-32">
@@ -108,11 +138,10 @@ useEffect(() => {
 
         {/* 3-Column Layout */}
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_3fr_1fr] gap-6 items-start">
-          {/* Left Sidebar */}
+          {/* Left Sidebar - Project Navigation */}
           <aside className="hidden sticky top-32 xl:block">
             <motion.div
-              className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto
-                         flex flex-col"
+              className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto flex flex-col"
               style={{
                 background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
@@ -164,7 +193,7 @@ useEffect(() => {
                           : {}
                       }
                     >
-                      <div className="text-sm font-medium">{proj.id}</div>
+                      <div className="text-sm font-medium">{proj.title}</div>
                     </button>
                   );
                 })}
@@ -175,78 +204,80 @@ useEffect(() => {
           {/* Center - Images & Description */}
           <main className="space-y-6">
             {/* Images Section */}
-            <motion.div
-              className="backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border"
-              style={{
-                background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
-                borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="relative h-[400px] md:h-[500px] group">
-                <motion.img
-                  key={currentImageIndex}
-                  src={projectImages[currentImageIndex]}
-                  alt={project.title}
-                  className="w-full h-full sm:object-contain object-cover"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                />
+            {projectImages.length > 0 && (
+              <motion.div
+                className="backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border"
+                style={{
+                  background: isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.5)',
+                  borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(148, 163, 184, 0.2)',
+                }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="relative h-[400px] md:h-[500px] group">
+                  <motion.img
+                    key={currentImageIndex}
+                    src={projectImages[currentImageIndex]}
+                    alt={`${project.title} - Image ${currentImageIndex + 1}`}
+                    className="w-full h-full sm:object-contain object-cover"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  />
 
-                {/* Navigation Arrows */}
-                {projectImages.length > 1 && (
-                  <>
-                    <button
-                      onClick={prevImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
-                      style={{
-                        background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
-                      }}
-                    >
-                      <ChevronLeft size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
-                    </button>
-                    <button
-                      onClick={nextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
-                      style={{
-                        background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
-                      }}
-                    >
-                      <ChevronRight size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
-                    </button>
-                  </>
-                )}
-
-                {/* Image Indicators */}
-                {projectImages.length > 1 && (
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                    {projectImages.map((_: any, index: number) => (
+                  {/* Navigation Arrows */}
+                  {projectImages.length > 1 && (
+                    <>
                       <button
-                        key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className="transition-all"
+                        onClick={prevImage}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
                         style={{
-                          width: index === currentImageIndex ? '32px' : '8px',
-                          height: '8px',
-                          borderRadius: '4px',
-                          background:
-                            index === currentImageIndex
-                              ? isDark
-                                ? '#fff'
-                                : '#0f172a'
-                              : isDark
-                              ? 'rgba(255, 255, 255, 0.3)'
-                              : 'rgba(15, 23, 42, 0.3)',
+                          background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
                         }}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </motion.div>
+                      >
+                        <ChevronLeft size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
+                      </button>
+                      <button
+                        onClick={nextImage}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all hover:scale-110"
+                        style={{
+                          background: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)',
+                        }}
+                      >
+                        <ChevronRight size={24} className={isDark ? 'text-white' : 'text-slate-900'} />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Image Indicators */}
+                  {projectImages.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                      {projectImages.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentImageIndex(index)}
+                          className="transition-all"
+                          style={{
+                            width: index === currentImageIndex ? '32px' : '8px',
+                            height: '8px',
+                            borderRadius: '4px',
+                            background:
+                              index === currentImageIndex
+                                ? isDark
+                                  ? '#fff'
+                                  : '#0f172a'
+                                : isDark
+                                ? 'rgba(255, 255, 255, 0.3)'
+                                : 'rgba(15, 23, 42, 0.3)',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
 
             {/* Description Section */}
             <motion.div
@@ -375,7 +406,7 @@ useEffect(() => {
             </motion.div>
           </main>
 
-          {/* Right Sidebar */}
+          {/* Right Sidebar - Project Meta */}
           <aside className="hidden sticky top-32 xl:block">
             <motion.div
               className="backdrop-blur-xl rounded-3xl p-6 shadow-2xl border max-h-[calc(100vh-10rem)] overflow-y-auto"

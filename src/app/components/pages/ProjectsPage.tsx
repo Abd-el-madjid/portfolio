@@ -223,12 +223,13 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                   <div className="relative h-64 overflow-hidden group-hover:scale-105 transition-transform duration-500">
                     <motion.img
                       src={project.image}
+
                       alt={project.title}
                       className="w-full h-full object-cover"
                       whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.3 }}
                     />
-                    
+
                     {/* Category Badge */}
                     <div className="absolute top-4 left-4">
                       <span
