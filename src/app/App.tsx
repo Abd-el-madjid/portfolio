@@ -15,7 +15,7 @@ import { BookingOverlayImproved } from './components/BookingOverlayImproved';
 import { LoadingScreen } from './components/LoadingScreen';
 import { usePageAssetLoader } from './hooks/usePageAssetLoader';
 import { getPageAssets, getProjectsPageAssets, getProjectAssets } from './utils/pageAssets';
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 // Wrapper component for project details to get projectId from URL
 function ProjectDetailWrapper({ isDark, projectAssets }: { isDark: boolean; projectAssets?: string[] }) {
   const navigate = useNavigate();
