@@ -1,7 +1,7 @@
 // File Location: src/components/LoadingScreen.tsx
 
 import { motion } from 'motion/react';
-import Logo from '../assets/home/logo.png';
+import Logo from '../assets/home/logo.webp';
 
 interface LoadingScreenProps {
   isDark: boolean;

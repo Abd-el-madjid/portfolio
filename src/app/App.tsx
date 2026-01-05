@@ -1,5 +1,6 @@
 // File Location: src/App.tsx
-
+import { ToastProvider } from './components/ui/ToastProvider';
+import { toast } from 'react-hot-toast';
 import { useState, useEffect,lazy, Suspense  } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { CosmicBackground } from './components/CosmicBackground';
@@ -14,6 +15,7 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { useImagePreloader, getCriticalImages } from './hooks/useImagePreloader';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import { QuickChatOverlay } from './components/QuickChatOverlay';
 
 
   // ✅ lazy with named export
@@ -28,6 +30,7 @@ import { Analytics } from "@vercel/analytics/react";
       default: module.ProjectDetailPage,
     }))
 )
+
   
 // Wrapper component for project details to get projectId from URL
 function ProjectDetailWrapper({ isDark }: { isDark: boolean }) {
@@ -58,7 +61,8 @@ export default function App() {
   const [isDark, setIsDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  
+  const [isOpenChat, setIsOpenChat] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -92,23 +96,37 @@ export default function App() {
   }, [isDark]);
 
   // Hide default cursor
-  useEffect(() => {
-    document.body.style.cursor = 'none';
-    const style = document.createElement('style');
-    style.innerHTML = `
-      *, *::before, *::after {
-        cursor: none !important;
-      }
-    `;
-    document.head.appendChild(style);
+useEffect(() => {
+  // If any overlay is open → restore normal cursor
+  if (isBookingOpen || isOpenChat) {
+    document.body.style.cursor = 'auto';
+    document.documentElement.style.cursor = 'auto';
+    document.querySelector('[data-custom-cursor]')?.remove();
+    return;
+  }
 
-    return () => {
-      document.body.style.cursor = 'auto';
-      document.head.removeChild(style);
-    };
-  }, []);
+  // Hide cursor
+  document.body.style.cursor = 'none';
+  document.documentElement.style.cursor = 'none';
+
+  const style = document.createElement('style');
+  style.setAttribute('data-custom-cursor', 'true');
+  style.innerHTML = `
+    *, *::before, *::after {
+      cursor: none !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  return () => {
+    document.body.style.cursor = 'auto';
+    document.documentElement.style.cursor = 'auto';
+    style.remove();
+  };
+}, [isBookingOpen, isOpenChat]);
 
   // Scroll to top when page changes
+  
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pathname]);
@@ -126,7 +144,11 @@ export default function App() {
     setIsBookingOpen(true);
     setIsMobileMenuOpen(false);
   };
-
+  const openChat = () => {
+    // setIsOpenChat(true);
+    // setIsMobileMenuOpen(false);
+    toast('Quick Chat is coming soon!');
+  };
   const navigateTo = (page: string) => {
     navigate(`/${page === 'home' ? '' : page}`);
   };
@@ -141,18 +163,22 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-screen">
+    <div  className="relative min-h-screen force-cursor">
       {/* Cosmic Background */}
       <CosmicBackground isDark={isDark} />
+      <ToastProvider isDark={isDark} />
 
       {/* Custom Cursor */}
-      <CustomCursorOptimized isDark={isDark} />
+      {!isBookingOpen && <CustomCursorOptimized isDark={isDark} />}
+
+          
 
       {/* Header */}
       <HeaderWithPages
         isDark={isDark}
         onToggleTheme={toggleTheme}
         onOpenBooking={openBooking}
+        onOpenQuickChat={openChat}
         onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         currentPage={currentPage}
         onNavigate={navigateTo}
@@ -188,7 +214,7 @@ export default function App() {
           />
           <Route 
             path="/services" 
-            element={<ServicesPage isDark={isDark} />} 
+            element={<ServicesPage isDark={isDark} onOpenBooking={openBooking} onOpenChat={openChat} />} 
           />
           <Route 
             path="/projects" 
@@ -213,7 +239,12 @@ export default function App() {
         onClose={() => setIsBookingOpen(false)}
         isDark={isDark}
       />
-
+      <QuickChatOverlay
+        
+        isOpen={isOpenChat}
+        onClose={() => setIsOpenChat(false)}
+        isDark={isDark}
+      />
       {/* Footer */}
       <footer className="relative py-12 px-6 text-center">
         <div

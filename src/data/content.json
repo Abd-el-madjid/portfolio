@@ -1,0 +1,433 @@
+{
+  "personal": {
+    "firstName": "Kahoul",
+    "lastName": "Abd El Madjid",
+    "fullName": "Kahoul Abd El Madjid",
+    "title": "Software Engineer & AI Specialist",
+    "role": "Creative Developer",
+    "tagline": "Building systems that don't just work, but think. Combining architectural rigor with intelligent automation, I focus on solutions that scale, adapt, and evolve.",
+    "motto": "Built with curiosity, refined by code."
+  },
+    "cta": {
+    "services": {
+      "icon": "rocket",
+      "title": "Ready to Build Something",
+      "highlightedText": "Extraordinary",
+      "description": "Let's turn your vision into reality. Whether it's an AI-powered app, a scalable platform, or cloud infrastructure—I'm here to make it happen.",
+      "buttons": {
+        "primary": "Start Your Project",
+        "secondary": "Quick Chat"
+      },
+      "features": [
+        { "icon": "award", "text": "3+ Years Experience", "colorLight": "text-cyan-600", "colorDark": "text-cyan-400" },
+        { "icon": "checkCircle", "text": "93% Client Satisfaction", "colorLight": "text-purple-600", "colorDark": "text-purple-400" },
+        { "icon": "zap", "text": "Fast Delivery", "colorLight": "text-amber-600", "colorDark": "text-amber-400" }
+      ]
+    },
+    "contact": {
+      "icon": "mail",
+      "title": "Let's Work",
+      "highlightedText": "Together",
+      "description": "Have a project in mind? I'd love to hear about it. Let's schedule a call to discuss how I can help bring your vision to life.",
+      "buttons": {
+        "primary": "Schedule a Call",
+        "secondary": "Send an Email"
+      },
+      "features": [
+        { "icon": "award", "text": "Available for Hire", "colorLight": "text-emerald-600", "colorDark": "text-emerald-400" },
+        { "icon": "zap", "text": "24h Response Time", "colorLight": "text-cyan-600", "colorDark": "text-cyan-400" },
+        { "icon": "checkCircle", "text": "Free Consultation", "colorLight": "text-purple-600", "colorDark": "text-purple-400" }
+      ]
+    },
+    "projects": {
+      "icon": "heart",
+      "title": "Impressed by What You",
+      "highlightedText": "Saw",
+      "description": "These projects are just the beginning. Let me help you create something equally impressive for your business.",
+      "buttons": {
+        "primary": "Hire Me Now",
+        "secondary": "View More Work"
+      },
+      "features": [
+        { "icon": "rocket", "text": "25+ Projects", "colorLight": "text-cyan-600", "colorDark": "text-cyan-400" },
+        { "icon": "award", "text": "Award Winning", "colorLight": "text-amber-600", "colorDark": "text-amber-400" },
+        { "icon": "checkCircle", "text": "Client Approved", "colorLight": "text-pink-600", "colorDark": "text-pink-400" }
+      ]
+    },
+    "about": {
+      "icon": "star",
+      "title": "Let's Create Something",
+      "highlightedText": "Amazing",
+      "description": "My passion is building intelligent systems that solve real problems. If you're looking for a developer who combines technical expertise with creative thinking, let's talk.",
+      "buttons": {
+        "primary": "Work With Me",
+        "secondary": "Download CV"
+      },
+      "features": [
+        { "icon": "code", "text": "Full-Stack Expert", "colorLight": "text-blue-600", "colorDark": "text-blue-400" },
+        { "icon": "briefcase", "text": "AI Specialist", "colorLight": "text-purple-600", "colorDark": "text-purple-400" },
+        { "icon": "award", "text": "AWS Certified", "colorLight": "text-orange-600", "colorDark": "text-orange-400" }
+      ]
+    },
+    "home": {
+      "icon": "rocket",
+      "title": "Ready to Transform Your",
+      "highlightedText": "Ideas",
+      "description": "From concept to deployment, I bring expertise in AI, full-stack development, and cloud architecture. Let's build something incredible together.",
+      "buttons": {
+        "primary": "View Projects",
+        "secondary": "Get in Touch"
+      },
+      "features": [
+        { "icon": "checkCircle", "text": "End-to-End Solutions", "colorLight": "text-green-600", "colorDark": "text-green-400" },
+        { "icon": "zap", "text": "Rapid Development", "colorLight": "text-yellow-600", "colorDark": "text-yellow-400" },
+        { "icon": "award", "text": "Quality Guaranteed", "colorLight": "text-rose-600", "colorDark": "text-rose-400" }
+      ]
+    }
+  },
+  "navigation": {
+    "links": [
+      { "id": "home", "label": "Home" },
+      { "id": "about", "label": "About" },
+      { "id": "services", "label": "Services" },
+      { "id": "projects", "label": "Projects" }
+    ]
+  },
+
+  "home": {
+    "buttons": {
+      "viewProjects": "View Projects",
+      "bookMeeting": "Book a Meeting",
+      "downloadCV": "CV"
+    }
+  },
+
+  "about": {
+    "title": "About Me",
+    "introduction": [
+      "Hi, I'm Abd El Madjid Kahoul, an AI & software graduate who enjoys figuring out how systems work—and making them work better.",
+      "I'm especially interested in the space where ideas turn into real, usable software, and where curiosity leads the way before the code does.",
+      "I like working at the intersection of artificial intelligence, backend engineering, and real-world problems—building systems that don't just run, but adapt and scale.",
+      "I enjoy learning by doing, collaborating with others, and constantly improving how things are built, whether through cleaner architecture, smarter data, or better design choices."
+    ],
+    "highlights": {
+      "ai": "artificial intelligence",
+      "backend": "backend engineering",
+      "problems": "real-world problems",
+      "adapt": "adapt and scale"
+    },
+    "tabs": {
+      "skills": {
+        "title": "Skills & Expertise",
+        "description": "Technical proficiency, soft skills, and what I bring to every project"
+      },
+      "journey": {
+        "title": "My Journey",
+        "description": "Education, work experience, and the path that shaped me from student to AI developer"
+      },
+      "achievements": {
+        "title": "Achievements",
+        "description": "Certifications, languages, and milestones that define my professional growth"
+      }
+    },
+    "sections": {
+      "education": "Education",
+      "workExperience": "Work Experience",
+      "technicalProficiency": "Technical Proficiency",
+      "softSkills": "Soft Skills",
+      "certifications": "Certifications",
+      "languages": "Languages"
+    }
+  },
+
+  "education": [
+    {
+      "degree": "Master's in Software Engineering & Intelligent Systems",
+      "institution": "University of Constantine 2",
+      "period": "2023 – 2025",
+      "grade": "Top Class B",
+      "description": "Advanced studies in AI, system architecture, and intelligent systems design"
+    },
+    {
+      "degree": "Bachelor's in Software Engineering",
+      "institution": "University of Constantine 2",
+      "period": "2020 – 2023",
+      "grade": "Class A",
+      "description": "Foundation in software development, algorithms, and system design"
+    },
+    {
+      "degree": "Baccalaureate in Experimental Sciences",
+      "institution": "Kateb Yacine High School",
+      "period": "2019 – 2020",
+      "grade": "Mention Bien",
+      "description": "Strong foundation in mathematics and sciences"
+    }
+  ],
+
+  "workExperience": [
+    {
+      "company": "Ooredoo Algeria",
+      "position": "AI Developer Intern",
+      "location": "Constantine, Algeria",
+      "period": "Apr 2025 - Jul 2025",
+      "description": "Contributed to RAVA AI platform for LTE anomaly detection in telecommunications infrastructure.",
+      "highlights": [
+        "Developed AI models for detecting anomalies in LTE KPIs using TensorFlow",
+        "Processed and analyzed large-scale telecom datasets for pattern recognition",
+        "Collaborated with telecom engineering teams for seamless platform integration"
+      ],
+      "technologies": ["Python", "TensorFlow", "Django", "React", "PostgreSQL"]
+    },
+    {
+      "company": "Create DZ",
+      "position": "Full-Stack Developer Intern",
+      "location": "Constantine, Algeria",
+      "period": "Jul 2024 - Sep 2024",
+      "description": "Developed ERP modules for enterprise resource planning system.",
+      "highlights": [
+        "Built responsive ERP modules using React.js and Django framework",
+        "Designed and optimized MySQL database schemas for business operations",
+        "Participated in requirement analysis and agile feature development cycles"
+      ],
+      "technologies": ["React.js", "Django", "MySQL", "JavaScript"]
+    },
+    {
+      "company": "University of Constantine 2",
+      "position": "Backend Developer Intern",
+      "location": "Constantine, Algeria",
+      "period": "Sep 2023 - Dec 2023",
+      "description": "Created comprehensive laboratory management application for the Rector's office.",
+      "highlights": [
+        "Designed and implemented RESTful APIs for lab management system",
+        "Developed secure authentication and authorization mechanisms",
+        "Built database architecture for tracking lab resources and schedules"
+      ],
+      "technologies": ["Django", "MySQL", "JavaScript", "HTML", "CSS"]
+    }
+  ],
+
+  "technicalSkills": [
+    {
+      "title": "Programming Languages",
+      "skills": ["Python", "Java", "JavaScript", "SQL", "HTML5", "CSS3"]
+    },
+    {
+      "title": "Frameworks & Tools",
+      "skills": ["Django", "Flask", "React", "Bootstrap", "Git", "Jira", "Figma"]
+    },
+    {
+      "title": "Databases",
+      "skills": ["MySQL", "PostgreSQL", "Oracle", "Firebase"]
+    },
+    {
+      "title": "AI & Data Science",
+      "skills": ["NumPy", "Pandas", "Matplotlib", "Scikit-learn", "TensorFlow", "OpenCV"]
+    }
+  ],
+
+  "softSkills": [
+    {
+      "title": "Leadership",
+      "description": "Leading team initiatives and mentoring colleagues"
+    },
+    {
+      "title": "Problem-Solving",
+      "description": "Analytical thinking and creative solutions to complex challenges"
+    },
+    {
+      "title": "Teamwork",
+      "description": "Collaborative approach to achieving shared goals"
+    },
+    {
+      "title": "Communication",
+      "description": "Clear technical communication across diverse teams"
+    },
+    {
+      "title": "Adaptability",
+      "description": "Quick learner, embracing new technologies and methodologies"
+    }
+  ],
+
+  "certifications": [
+    {
+      "title": "AWS Cloud Practitioner",
+      "issuer": "Amazon Web Services",
+      "year": "2024",
+      "level": "Foundational"
+    },
+    {
+      "title": "TCF French Language",
+      "issuer": "France Éducation International",
+      "level": "Level B2"
+    }
+  ],
+
+  "languages": [
+    { "name": "Arabic", "level": "Native", "flag": "🇩🇿" },
+    { "name": "English", "level": "Level B2", "flag": "🇬🇧" },
+    { "name": "French", "level": "TCF B2", "flag": "🇫🇷" }
+  ],
+
+  "services": {
+    "title": "Services & Expertise",
+    "subtitle": "Transforming ideas into powerful digital solutions. From AI-powered applications to scalable cloud infrastructure.",
+    "sections": {
+      "whatIOffer": {
+        "title": "What I Offer",
+        "subtitle": "Cutting-edge solutions tailored to your needs"
+      },
+      "myProcess": {
+        "title": "My Process",
+        "subtitle": "Scroll to reveal each step"
+      },
+      "clientLove": {
+        "title": "Client Love",
+        "subtitle": "Real results, real testimonials"
+      },
+      "cta": {
+        "title": "Ready to Build Something Extraordinary?",
+        "description": "Let's turn your vision into reality. Whether it's an AI-powered app, a scalable platform, or cloud infrastructure—I'm here to make it happen.",
+        "buttons": {
+          "start": "Start Your Project",
+          "chat": "Quick Chat"
+        },
+        "features": [
+          "5+ Years Experience",
+          "98% Client Satisfaction",
+          "Fast Delivery"
+        ]
+      }
+    }
+  },
+
+  "stats": [
+    { "label": "Projects Delivered", "value": 8, "suffix": "+" },
+    { "label": "Satisfied Clients", "value": 6, "suffix": "+" },
+    { "label": "Years Experience", "value": 3, "suffix": "+" },
+    { "label": "Client Satisfaction", "value": 93, "suffix": "%" }
+  ],
+
+  "servicesList": [
+    {
+      "title": "Full-Stack Development",
+      "description": "Crafting scalable web applications with React, Django, and Flask. From elegant backends to stunning interfaces.",
+      "features": ["React & Next.js", "Django & Flask", "RESTful APIs", "Responsive Design"]
+    },
+    {
+      "title": "AI & Machine Learning",
+      "description": "Building intelligent systems with TensorFlow and OpenCV. From predictive analytics to computer vision.",
+      "features": ["Deep Learning", "Computer Vision", "NLP Solutions", "Predictive Models"]
+    },
+    {
+      "title": "Database Architecture",
+      "description": "Designing robust databases with MySQL, PostgreSQL, and Oracle. Optimized for scale and performance.",
+      "features": ["SQL Optimization", "Data Modeling", "Migration", "Performance Tuning"]
+    },
+    {
+      "title": "System Architecture",
+      "description": "Creating enterprise-grade architectures. Scalable, maintainable, and future-proof solutions.",
+      "features": ["Microservices", "API Design", "System Design", "Tech Strategy"]
+    },
+    {
+      "title": "Cloud Solutions",
+      "description": "AWS infrastructure that scales with your business. Serverless, secure, and cost-optimized.",
+      "features": ["AWS Services", "Serverless", "DevOps", "Cloud Migration"]
+    },
+    {
+      "title": "Technical Consulting",
+      "description": "Strategic guidance for your tech journey. Architecture reviews, team mentorship, and more.",
+      "features": ["Code Reviews", "Team Training", "Tech Stack", "Best Practices"]
+    }
+  ],
+
+  "process": [
+    {
+      "step": "01",
+      "title": "Discovery & Strategy",
+      "description": "Deep dive into your vision, goals, and challenges. We define success metrics and create a strategic roadmap."
+    },
+    {
+      "step": "02",
+      "title": "Design & Planning",
+      "description": "Detailed technical architecture, wireframes, and project timeline. Every detail mapped out before we code."
+    },
+    {
+      "step": "03",
+      "title": "Build & Iterate",
+      "description": "Agile development with weekly demos. Your feedback shapes the product at every sprint."
+    },
+    {
+      "step": "04",
+      "title": "Launch & Scale",
+      "description": "Rigorous testing, smooth deployment, and ongoing support. Your success is our success."
+    }
+  ],
+
+  "testimonials": [
+    {
+      "name": "Sarah Johnson",
+      "role": "CEO, TechStart Inc.",
+      "content": "The AI solution delivered exceeded all expectations. Our operational efficiency improved by 45% in just 3 months. Truly transformative work!",
+      "rating": 4,
+      "image": "🚀"
+    },
+    {
+      "name": "Michael Chen",
+      "role": "CTO, DataFlow Solutions",
+      "content": "Exceptional technical expertise paired with great communication. The database optimization resulted in 60% faster queries and happier users.",
+      "rating": 3,
+      "image": "⚡"
+    },
+    {
+      "name": "Emma Rodriguez",
+      "role": "Product Manager, CloudScale",
+      "content": "Delivered a complex full-stack app on time and budget. The code quality, documentation, and attention to detail were outstanding.",
+      "rating": 5,
+      "image": "🎯"
+    }
+  ],
+
+  "projects": {
+    "title": "Projects",
+    "subtitle": "A selection of projects showcasing intelligent systems, full-stack development, and scalable architectures",
+    "filterButton": "Filter by Category",
+    "selectAll": "Select All",
+    "showingText": "Showing {count} of {total} projects",
+    "noProjects": "No projects found in the selected categories.",
+    "detail": {
+      "sections": {
+        "overview": "Overview",
+        "problem": "Problem",
+        "solution": "Solution",
+        "outcome": "Outcome"
+      },
+      "sidebar": {
+        "technologies": "Technologies",
+        "category": "Category",
+        "links": "Links",
+        "repository": "Repository",
+        "liveDemo": "Live Demo"
+      },
+      "buttons": {
+        "github": "GitHub",
+        "demo": "Live Demo",
+        "back": "Projects"
+      },
+      "notFound": "Project not found"
+    }
+  },
+
+  "identityBadge": {
+    "name": "Kahoul Abd EL Madjid",
+    "role": "Creative Developer"
+  },
+
+  "header": {
+    "bookButton": "Book",
+    "socialLinks": {
+      "github": "https://github.com/Abd-el-madjid",
+      "linkedin": "https://www.linkedin.com/in/kahoul-abd-el-madjid",
+      "mail": "mailto:abdelmadjid.kahoul@hotmail.com"
+    }
+  }
+}

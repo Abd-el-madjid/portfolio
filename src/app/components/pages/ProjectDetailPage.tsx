@@ -1,9 +1,7 @@
-// File Location: src/components/pages/ProjectDetailPage.tsx
-
 import { motion } from 'motion/react';
 import { ArrowLeft, Github, ExternalLink, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
-import { projects } from '@/data/index';
+import { projects, content } from '@/data/index';
 import { CATEGORIES } from '@/data/categories';
 import { getCategoryColors } from '@/lib/colors';
 import {
@@ -28,7 +26,6 @@ export function ProjectDetailPage({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   
-  // Memoize project lookup to prevent unnecessary recalculations
   const project = useMemo(
     () => projects.find(p => p.id === projectId),
     [projectId]
@@ -44,18 +41,15 @@ export function ProjectDetailPage({
     [categoryData]
   );
 
-  // Memoize project images to prevent recalculation on every render
   const projectImages = useMemo(
     () => project?.images ?? [],
     [project?.images]
   );
 
-  // Reset image index when project changes
   useEffect(() => {
     setCurrentImageIndex(0);
   }, [projectId]);
 
-  // Auto-scroll images every 5 seconds
   useEffect(() => {
     if (projectImages.length <= 1) return;
 
@@ -74,20 +68,19 @@ export function ProjectDetailPage({
     setCurrentImageIndex((prev) => (prev - 1 + projectImages.length) % projectImages.length);
   };
 
-  // Early return if project not found
   if (!project || !categoryData || !categoryColors) {
     return (
       <div className="min-h-screen px-8 py-32 flex items-center justify-center">
         <div className={`text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          Project not found
+          {content.projects.detail.notFound}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-8 py-32">
-      <div className="max-w-[1600px] px-7 mx-auto">
+    <div className="min-h-screen px-7 py-32">
+      <div className="max-w-[1600px] px-8 mx-auto">
         {/* Mobile Dropdown for Projects */}
         <div className="xl:hidden mb-6">
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -158,7 +151,9 @@ export function ProjectDetailPage({
                 whileTap={{ scale: 0.95 }}
               >
                 <ArrowLeft size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
-                <span className={`font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>Projects</span>
+                <span className={`font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  {content.projects.detail.buttons.back}
+                </span>
               </motion.button>
 
               {/* Divider */}
@@ -311,7 +306,7 @@ export function ProjectDetailPage({
               <div className="space-y-6">
                 <div>
                   <h3 className={`text-xl font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                    Overview
+                    {content.projects.detail.sections.overview}
                   </h3>
                   <p
                     className={`text-base leading-relaxed ${
@@ -325,7 +320,7 @@ export function ProjectDetailPage({
                 {project.problem && (
                   <div>
                     <h3 className={`text-xl font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      Problem
+                      {content.projects.detail.sections.problem}
                     </h3>
                     <p
                       className={`text-base leading-relaxed ${
@@ -340,7 +335,7 @@ export function ProjectDetailPage({
                 {project.solution && (
                   <div>
                     <h3 className={`text-xl font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      Solution
+                      {content.projects.detail.sections.solution}
                     </h3>
                     <p
                       className={`text-base leading-relaxed ${
@@ -355,7 +350,7 @@ export function ProjectDetailPage({
                 {project.outcome && (
                   <div>
                     <h3 className={`text-xl font-semibold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                      Outcome
+                      {content.projects.detail.sections.outcome}
                     </h3>
                     <p
                       className={`text-base leading-relaxed ${
@@ -383,7 +378,9 @@ export function ProjectDetailPage({
                     }}
                   >
                     <Github size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
-                    <span className={isDark ? 'text-white' : 'text-slate-900'}>GitHub</span>
+                    <span className={isDark ? 'text-white' : 'text-slate-900'}>
+                      {content.projects.detail.buttons.github}
+                    </span>
                   </a>
                 )}
                 {project.demo && (
@@ -399,7 +396,9 @@ export function ProjectDetailPage({
                     }}
                   >
                     <ExternalLink size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
-                    <span className={isDark ? 'text-white' : 'text-slate-900'}>Live Demo</span>
+                    <span className={isDark ? 'text-white' : 'text-slate-900'}>
+                      {content.projects.detail.buttons.demo}
+                    </span>
                   </a>
                 )}
               </div>
@@ -421,7 +420,7 @@ export function ProjectDetailPage({
               {/* Technologies */}
               <div className="mb-8">
                 <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Technologies
+                  {content.projects.detail.sidebar.technologies}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((tech: string) => (
@@ -443,7 +442,7 @@ export function ProjectDetailPage({
               {/* Category */}
               <div className="mb-8">
                 <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Category
+                  {content.projects.detail.sidebar.category}
                 </h3>
                 <span
                   className={`inline-block px-4 py-1.5 text-sm font-medium rounded-lg bg-gradient-to-r ${categoryData.gradient} text-white`}
@@ -455,7 +454,7 @@ export function ProjectDetailPage({
               {/* Project Links */}
               <div>
                 <h3 className={`text-base font-semibold mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  Links
+                  {content.projects.detail.sidebar.links}
                 </h3>
                 <div className="space-y-3">
                   {project.github && (
@@ -469,7 +468,7 @@ export function ProjectDetailPage({
                       }}
                     >
                       <Github size={16} />
-                      Repository
+                      {content.projects.detail.sidebar.repository}
                     </a>
                   )}
                   {project.demo && (
@@ -483,7 +482,7 @@ export function ProjectDetailPage({
                       }}
                     >
                       <ExternalLink size={16} />
-                      Live Demo
+                      {content.projects.detail.sidebar.liveDemo}
                     </a>
                   )}
                 </div>

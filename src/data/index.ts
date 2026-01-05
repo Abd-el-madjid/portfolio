@@ -1,6 +1,8 @@
 // File Location: src/data/index.ts
 
 import projectsJson from './projects.json';
+import Content from './content.json';
+
 import { CATEGORIES } from './categories';
 import { Project } from '@/types';
 import { 
@@ -14,7 +16,7 @@ import {
 if (import.meta.env.DEV) {
   debugImagePaths();
 }
-
+export const content = Content;
 export const projects: Project[] = projectsJson.map(project => {
   const images = getProjectImages(project.id);
   const mainImage = images[0] ?? '';

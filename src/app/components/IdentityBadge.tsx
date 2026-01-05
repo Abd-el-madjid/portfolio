@@ -1,22 +1,20 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { badgeImages, totalBadgeImages, loadImage, preloadNextImage } from '../utils/badgeImages';
+import { totalBadgeImages, loadImage, preloadNextImage } from '../utils/badgeImages';
+import { content } from '@/data/index';
 
 interface IdentityBadgeProps {
   isDark: boolean;
-    onHoverChange?: (hovered: boolean) => void;
-
+  onHoverChange?: (hovered: boolean) => void;
 }
+
 const INTERVAL = 10_000; // 10 seconds
 const STORAGE_KEY = 'badge-rotation-state';
-
-
 
 export function IdentityBadge({ isDark }: IdentityBadgeProps) {
   const badgeRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
-
 
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -24,12 +22,7 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
   const [index, setIndex] = useState(0);
   const [currentSrc, setCurrentSrc] = useState<string | null>(null);
 
-  const totalImages = 100; // adjust to your number of badge images
-
-  // -------------------------------
   // Mouse movement handlers
-  // -------------------------------
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!badgeRef.current) return;
 
@@ -50,9 +43,7 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
     setIsHovered(false);
   };
 
-  // -------------------------------
   // Restore state from sessionStorage
-  // -------------------------------
   function restoreState() {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return { index: 0, remaining: INTERVAL };
@@ -65,29 +56,28 @@ export function IdentityBadge({ isDark }: IdentityBadgeProps) {
 
     return { index: restoredIndex, remaining };
   }
-const advance = () => {
-  setIndex((prevIndex) => {
-    const nextIndex = (prevIndex + 1) % totalBadgeImages;
-    
-    loadImage(nextIndex).then((src) => {
-      if (src) {
-        setCurrentSrc(src);
-        preloadNextImage(nextIndex);
-        sessionStorage.setItem(
-          STORAGE_KEY,
-          JSON.stringify({ index: nextIndex, lastChange: Date.now() })
-        );
-      }
+
+  const advance = () => {
+    setIndex((prevIndex) => {
+      const nextIndex = (prevIndex + 1) % totalBadgeImages;
+      
+      loadImage(nextIndex).then((src) => {
+        if (src) {
+          setCurrentSrc(src);
+          preloadNextImage(nextIndex);
+          sessionStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify({ index: nextIndex, lastChange: Date.now() })
+          );
+        }
+      });
+
+      timerRef.current = setTimeout(advance, INTERVAL);
+      return nextIndex;
     });
+  };
 
-    timerRef.current = setTimeout(advance, INTERVAL);
-    return nextIndex;
-  });
-};
-
-  // -------------------------------
   // On mount
-  // -------------------------------
   useEffect(() => {
     const { index: restoredIndex, remaining } = restoreState();
 
@@ -202,9 +192,9 @@ const advance = () => {
           <div className="w-full h-full rounded-2xl overflow-hidden">
             {currentSrc && (
               <ImageWithFallback
-                key={currentSrc} // 🔥 remove old image
+                key={currentSrc}
                 src={currentSrc}
-                alt="Profile"
+                alt={content.identityBadge.name}
                 className="w-full h-full object-cover"
               />
             )}
@@ -224,10 +214,10 @@ const advance = () => {
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           <h3 className={`text-xl ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Kahoul Abd EL Madjid
+            {content.identityBadge.name}
           </h3>
           <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-slate-600'}`}>
-            Creative Developer
+            {content.identityBadge.role}
           </p>
         </motion.div>
       </motion.div>

@@ -7,7 +7,12 @@
 html {
   scroll-behavior: smooth;
 }
-
+.force-cursor {
+  cursor: pointer !important;
+}
+body{
+  cursor: pointer !important;
+}
 /* Custom scrollbar for dark theme */
 ::-webkit-scrollbar {
   width: 10px;

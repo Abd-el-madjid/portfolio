@@ -1,13 +1,14 @@
-import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Menu,Download, Github, Linkedin, Calendar } from 'lucide-react';
-import Logo from '../assets/home/logo.png';
+import { Menu, Download, Github, Linkedin, Calendar,Mail ,MessageCircle} from 'lucide-react';
+import Logo from '../assets/home/logo.webp';
 import CV from '../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
-
+import { content } from '@/data/index';
+import { toast } from 'react-hot-toast';
 interface HeaderWithPagesProps {
   isDark: boolean;
   onToggleTheme: () => void;
   onOpenBooking: () => void;
+  onOpenQuickChat?: () => void;
   onOpenMobileMenu: () => void;
   currentPage: string;
   onNavigate: (page: string) => void;
@@ -17,19 +18,17 @@ export function HeaderWithPages({
   isDark, 
   onToggleTheme, 
   onOpenBooking, 
+  onOpenQuickChat,
   onOpenMobileMenu,
   currentPage,
   onNavigate
 }: HeaderWithPagesProps) {
-  const links = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'projects', label: 'Projects' },
-  ];
-
+  const links = content.navigation.links;
   const isHome = currentPage === 'home';
-
+const handlecopier = () => {
+  navigator.clipboard.writeText(content.header.socialLinks.mail);
+  toast.success('Email address copied to clipboard!');
+}
   return (
     <motion.header
       className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl"
@@ -97,7 +96,7 @@ export function HeaderWithPages({
           {/* Right Icons */}
           <div className="flex items-center gap-4">
             <motion.a
-              href="https://github.com/Abd-el-madjid"
+              href={content.header.socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
@@ -106,7 +105,7 @@ export function HeaderWithPages({
               <Github size={20} />
             </motion.a>
             <motion.a
-              href="https://www.linkedin.com/in/kahoul-abd-el-madjid"
+              href={content.header.socialLinks.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
@@ -114,6 +113,23 @@ export function HeaderWithPages({
             >
               <Linkedin size={20} />
             </motion.a>
+            <motion.a
+              onClick={handlecopier}
+
+              rel="noopener noreferrer"
+              className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
+              whileHover={{ scale: 1.1, y: -2 }}
+            >
+              <Mail size={20} />
+            </motion.a>
+            <motion.button
+              onClick={onOpenQuickChat}
+              className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
+              whileHover={{ scale: 1.1, y: -2 }}
+            >
+              <MessageCircle size={20} />
+            </motion.button>
+           
 
             {/* Download CV - Hidden on Home page */}
             {!isHome && (
@@ -121,7 +137,6 @@ export function HeaderWithPages({
                 href={CV}
                 download
                 target="_blank"
-
                 className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -133,7 +148,7 @@ export function HeaderWithPages({
                 <Download size={20} />
               </motion.a>
             )}
-
+                        
             {/* Book Button - Hidden on Home page */}
             {!isHome && (
               <motion.button
@@ -151,7 +166,7 @@ export function HeaderWithPages({
                 transition={{ duration: 0.2 }}
               >
                 <Calendar size={16} />
-                <span>Book</span>
+                <span>{content.header.bookButton}</span>
               </motion.button>
             )}
 

@@ -2,8 +2,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Cal from '@calcom/embed-react';
-import logo from '../assets/home/logo.png';
-import myPic from '../assets/home/badge_pic_1.jpg';
+import logo from '../assets/home/logo.webp';
+// import myPic from '../assets/home/badge_pic_1.webp';
 
 interface BookingOverlayImprovedProps {
   isOpen: boolean;
@@ -96,7 +96,7 @@ export function BookingOverlayImproved({ isOpen, onClose, isDark }: BookingOverl
               style={{ borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(3,105,161,0.2)' }}
             >
               <img src={logo} className="w-20 h-20 mb-4" alt="Logo" />
-              <img src={myPic} className="w-24 h-24 rounded-full mb-4" alt="My Pic" />
+              {/* <img src={myPic} className="w-24 h-24 rounded-full mb-4" alt="My Pic" /> */}
               <h3 className={`text-lg font-semibold mb-1 ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 Kahoul Abd El Madjid
               </h3>

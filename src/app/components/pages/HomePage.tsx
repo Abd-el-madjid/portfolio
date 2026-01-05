@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { ArrowRight, Calendar, Download } from 'lucide-react';
 import { IdentityBadge } from '../IdentityBadge';
 import React from 'react';
+import CV from '../../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
+import { content } from '@/data/index';
 
 interface HomePageProps {
   isDark: boolean;
@@ -10,18 +12,16 @@ interface HomePageProps {
 }
 
 export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
-  const name = "Kahoul  Abd  El  Madjid";
+  const { firstName, lastName, title, tagline } = content.personal;
+  const { viewProjects, bookMeeting, downloadCV } = content.home.buttons;
   
   const handleBookingClick = () => {
     console.log('HomePage - Book a Meeting button clicked');
-    console.log('HomePage - onOpenBooking function:', onOpenBooking);
-    console.log('HomePage - Calling onOpenBooking...');
     onOpenBooking();
-    console.log('HomePage - onOpenBooking called successfully');
   };
   
   return (
-    <section className="min-h-screen flex items-center justify-center px-8 pt-32 pb-20">
+    <section className="min-h-screen flex items-center justify-center px-7 pt-32 pb-20">
       <div className="max-w-7xl w-full grid md:grid-cols-2 gap-8 px-8 items-center">
         {/* Left Content */}
         <motion.div
@@ -44,12 +44,14 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             <motion.h1
               className={`text-5xl md:text-6xl ${
                 isDark ? 'text-white' : 'text-slate-900'
-              } tracking-tight font-bold cursor-default whitespace-nowrap`}
+              } tracking-tight font-bold cursor-default`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {name.split('').map((char, index) => {
+              {[firstName, lastName].map((namePart, lineIndex) => (
+                <div key={lineIndex} className={lineIndex === 1 ? 'mt-2' : ''}>
+                  {namePart.split('').map((char, index) => {
                 const [isHovered, setIsHovered] = React.useState(false);
                 const [isClicked, setIsClicked] = React.useState(false);
 
@@ -72,7 +74,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
                 
                 return (
                   <motion.span
-                    key={index}
+                    key={`${lineIndex}-${index}`}
                     className="relative"
                     onHoverStart={() => setIsHovered(true)}
                     onHoverEnd={() => setIsHovered(false)}
@@ -157,6 +159,8 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
                   </motion.span>
                 );
               })}
+                </div>
+              ))}
             </motion.h1>
 
             <motion.div
@@ -167,7 +171,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              Software Engineer & AI Specialist
+              {title}
             </motion.div>
           </motion.div>
 
@@ -179,8 +183,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
           >
-            Building systems that don't just work, but think. Combining architectural rigor 
-            with intelligent automation, I focus on solutions that scale, adapt, and evolve.
+            {tagline}
           </motion.p>
 
           <motion.div
@@ -204,7 +207,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
               whileTap={{ scale: 0.95 }}
             >
               <span className={isDark ? 'text-white' : 'text-slate-900'}>
-                View Projects
+                {viewProjects}
               </span>
               <motion.div
                 animate={{ x: [0, 5, 0] }}
@@ -230,12 +233,12 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             >
               <Calendar size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
               <span className={isDark ? 'text-white' : 'text-slate-900'}>
-                Book a Meeting
+                {bookMeeting}
               </span>
             </motion.button>
 
             <motion.a
-              href="/path-to-your-cv.pdf"
+              href={CV}
               download
               target="_blank"
               className="flex items-center gap-3 px-8 py-4 rounded-2xl backdrop-blur-xl shadow-lg"
@@ -252,7 +255,7 @@ export function HomePage({ isDark, onNavigate, onOpenBooking }: HomePageProps) {
             >
               <Download size={20} className={isDark ? 'text-white' : 'text-slate-900'} />
               <span className={isDark ? 'text-white' : 'text-slate-900'}>
-                Download CV
+                {downloadCV}
               </span>
             </motion.a>
           </motion.div>

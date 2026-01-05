@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { ExternalLink, Github, ChevronDown, X } from 'lucide-react';
 import { useState } from 'react';
 import { Checkbox } from '@/app/components/ui/checkbox';
@@ -7,31 +7,23 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
+import { projects, content } from '@/data/index';
+import { CATEGORIES } from '@/data/categories';
+import { getCategoryColors } from '@/lib/colors';
 
 interface ProjectsPageProps {
   isDark: boolean;
   onProjectClick: (projectId: string) => void;
 }
-import { projects } from '@/data/index';
-import { CATEGORIES } from '@/data/categories';
-import {  getCategoryColors } from '@/lib/colors';
-
-
-// Category definitions with their gradients
-
 
 export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     Object.keys(CATEGORIES)
   );
 
-
-
   const filteredProjects = projects.filter((project) =>
     selectedCategories.includes(project.category)
   );
-
-
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -41,8 +33,12 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
     );
   };
 
+  const showingText = content.projects.showingText
+    .replace('{count}', filteredProjects.length.toString())
+    .replace('{total}', projects.length.toString());
+
   return (
-    <div className="min-h-screen px-7 py-32">
+    <section className="min-h-screen px-7 py-32">
       <div className="max-w-7xl px-8 mx-auto">
         <motion.div
           className="text-center mb-12"
@@ -51,11 +47,11 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
           transition={{ duration: 0.8 }}
         >
           <h1
-            className={`text-5xl md:text-6xl mb-6 ${
+            className={`text-5xl md:text-6xl mb-6 font-bold ${
               isDark ? 'text-white' : 'text-slate-900'
             }`}
           >
-            Projects
+            {content.projects.title}
           </h1>
           <div
             className="h-1 w-24 mx-auto rounded-full mb-8"
@@ -70,7 +66,7 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
               isDark ? 'text-gray-300' : 'text-slate-700'
             }`}
           >
-            A selection of projects showcasing intelligent systems, full-stack development, and scalable architectures
+            {content.projects.subtitle}
           </p>
         </motion.div>
 
@@ -92,7 +88,7 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                       : 'bg-white border-slate-200 hover:border-slate-300 text-slate-900'
                   }`}
                 >
-                  <span className="font-medium">Filter by Category</span>
+                  <span className="font-medium">{content.projects.filterButton}</span>
                   <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                     ({selectedCategories.length})
                   </span>
@@ -167,7 +163,7 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                     }`}
                   >
-                    Select All
+                    {content.projects.selectAll}
                   </button>
                 )}
               </>
@@ -184,7 +180,7 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
         >
-          Showing {filteredProjects.length} of {projects.length} projects
+          {showingText}
         </motion.div>
 
         {/* Projects Grid */}
@@ -223,7 +219,6 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                   <div className="relative h-64 overflow-hidden group-hover:scale-105 transition-transform duration-500">
                     <motion.img
                       src={project.image}
-
                       alt={project.title}
                       className="w-full h-full object-cover"
                       whileHover={{ scale: 1.05 }}
@@ -329,11 +324,11 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                 isDark ? 'text-gray-400' : 'text-gray-600'
               }`}
             >
-              No projects found in the selected categories.
+              {content.projects.noProjects}
             </p>
           </motion.div>
         )}
       </div>
-    </div>
+    </section>
   );
 }
