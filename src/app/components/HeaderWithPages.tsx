@@ -137,8 +137,12 @@ const handlecopier = () => {
                 href={CV}
                 download
                 target="_blank"
-                className={`hidden md:block ${isDark ? 'text-gray-300 hover:text-white' : 'text-slate-700 hover:text-slate-900'}`}
-                whileHover={{ scale: 1.1, y: -2 }}
+                className={`hidden md:flex items-center gap-2 px-4 py-2 rounded-lg ${
+                  isDark
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-cyan-500/20 hover:bg-cyan-500/30 text-slate-900'
+                }`}
+                whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -146,6 +150,7 @@ const handlecopier = () => {
                 transition={{ duration: 0.2 }}
               >
                 <Download size={20} />
+                <span>{content.header.cvButton}</span>
               </motion.a>
             )}
                         
