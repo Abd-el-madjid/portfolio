@@ -265,7 +265,8 @@ useEffect(() => {
       </footer>
 
       {/* Vercel Analytics */}
-      <SpeedInsights />
+      <SpeedInsights  sampleRate={100} // send metrics for 100% of users
+  debug={false} />
       <Analytics />
     </div>
   );
