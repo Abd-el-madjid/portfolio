@@ -3,46 +3,46 @@ import { ColorMapping } from '@/types';
 export const getCategoryColors = (color: string): ColorMapping => {
   const colorMap: Record<string, ColorMapping> = {
     cyan: {
-      dark: 'rgba(6, 182, 212, 1)',
-      light: 'rgba(8, 145, 178, 1)',
-      shadowDark: 'rgba(6, 182, 212, 0.3)',
-      shadowLight: 'rgba(6, 182, 212, 0.2)'
+      dark: 'rgba(103, 183, 196, 1)',
+      light: 'rgba(89, 161, 173, 1)',
+      shadowDark: 'rgba(103, 183, 196, 0.3)',
+      shadowLight: 'rgba(103, 183, 196, 0.2)'
     },
     purple: {
-      dark: 'rgba(168, 85, 247, 1)',
-      light: 'rgba(147, 51, 234, 1)',
-      shadowDark: 'rgba(168, 85, 247, 0.3)',
-      shadowLight: 'rgba(168, 85, 247, 0.2)'
+      dark: 'rgba(167, 139, 198, 1)',
+      light: 'rgba(147, 119, 178, 1)',
+      shadowDark: 'rgba(167, 139, 198, 0.3)',
+      shadowLight: 'rgba(167, 139, 198, 0.2)'
     },
     green: {
-      dark: 'rgba(16, 185, 129, 1)',
-      light: 'rgba(13, 148, 136, 1)',
-      shadowDark: 'rgba(16, 185, 129, 0.3)',
-      shadowLight: 'rgba(16, 185, 129, 0.2)'
+      dark: 'rgba(115, 171, 153, 1)',
+      light: 'rgba(99, 151, 133, 1)',
+      shadowDark: 'rgba(115, 171, 153, 0.3)',
+      shadowLight: 'rgba(115, 171, 153, 0.2)'
     },
     orange: {
-      dark: 'rgba(251, 146, 60, 1)',
-      light: 'rgba(239, 68, 68, 1)',
-      shadowDark: 'rgba(251, 146, 60, 0.3)',
-      shadowLight: 'rgba(251, 146, 60, 0.2)'
+      dark: 'rgba(217, 155, 124, 1)',
+      light: 'rgba(197, 135, 104, 1)',
+      shadowDark: 'rgba(217, 155, 124, 0.3)',
+      shadowLight: 'rgba(217, 155, 124, 0.2)'
     },
     blue: {
-      dark: 'rgba(59, 130, 246, 1)',
-      light: 'rgba(79, 70, 229, 1)',
-      shadowDark: 'rgba(59, 130, 246, 0.3)',
-      shadowLight: 'rgba(59, 130, 246, 0.2)'
+      dark: 'rgba(119, 158, 203, 1)',
+      light: 'rgba(103, 142, 187, 1)',
+      shadowDark: 'rgba(119, 158, 203, 0.3)',
+      shadowLight: 'rgba(119, 158, 203, 0.2)'
     },
     violet: {
-      dark: 'rgba(139, 92, 246, 1)',
-      light: 'rgba(124, 58, 237, 1)',
-      shadowDark: 'rgba(139, 92, 246, 0.3)',
-      shadowLight: 'rgba(139, 92, 246, 0.2)'
+      dark: 'rgba(155, 143, 194, 1)',
+      light: 'rgba(135, 123, 174, 1)',
+      shadowDark: 'rgba(155, 143, 194, 0.3)',
+      shadowLight: 'rgba(155, 143, 194, 0.2)'
     },
     pink: {
-      dark: 'rgba(236, 72, 153, 1)',
-      light: 'rgba(244, 114, 182, 1)',
-      shadowDark: 'rgba(236, 72, 153, 0.3)',
-      shadowLight: 'rgba(244, 114, 182, 0.2)'
+      dark: 'rgba(213, 143, 169, 1)',
+      light: 'rgba(203, 153, 179, 1)',
+      shadowDark: 'rgba(213, 143, 169, 0.3)',
+      shadowLight: 'rgba(213, 143, 169, 0.2)'
     }
   };
 
