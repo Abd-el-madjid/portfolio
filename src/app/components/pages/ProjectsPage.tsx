@@ -235,26 +235,37 @@ export function ProjectsPage({ isDark, onProjectClick }: ProjectsPageProps) {
                     </div>
 
                     {/* Hover Overlay with Links */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4 space-x-2">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
-                      >
-                        <Github className="w-5 h-5 text-white" />
-                      </a>
-                      <a
-                        href={project.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
-                      >
-                        <ExternalLink className="w-5 h-5 text-white" />
-                      </a>
-                    </div>
+                 <div
+  className="
+    absolute inset-0 
+    bg-gradient-to-t from-black/60 to-transparent 
+    opacity-0 group-hover:opacity-100 
+    transition-opacity duration-300 
+    flex items-end justify-end p-4 space-x-2
+    sm:opacity-0
+    opacity-100
+  "
+>
+  <a
+    href={project.github}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
+  >
+    <Github className="w-5 h-5 text-white" />
+  </a>
+  <a
+    href={project.demo}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    className="p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
+  >
+    <ExternalLink className="w-5 h-5 text-white" />
+  </a>
+</div>
+
                   </div>
 
                   {/* Content */}
