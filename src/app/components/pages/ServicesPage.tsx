@@ -241,8 +241,7 @@ export function ServicesPage({ isDark, onOpenBooking, onOpenChat }: ServicesPage
   }, []);
 
   return (
-    <section className="min-h-screen px-7 py-32 relative overflow-hidden">
-      <div className="max-w-7xl px-8 mx-auto">
+    <section className="min-h-screen px-6 py-32 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <FloatingParticle delay={0} duration={4} x="10%" y="20%" />
           <FloatingParticle delay={1} duration={5} x="85%" y="30%" />
@@ -846,7 +845,6 @@ export function ServicesPage({ isDark, onOpenBooking, onOpenChat }: ServicesPage
             100% { background-position: 0% 50%; }
           }
         `}</style>
-      </div>
     </section>
   );
 }
