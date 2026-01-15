@@ -141,7 +141,7 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
             .
           </motion.span>
         </motion.h2>
-
+/*
         {/* Progress Bar */}
         <div className="w-64 md:w-96 relative">
           {/* Background Track */}
@@ -184,7 +184,7 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
             </motion.div>
           </div>
 
-          {/* Progress Percentage */}
+           {/* Progress Percentage */}
           <motion.div
             className={`text-center mt-4 text-sm font-medium ${
               isDark ? 'text-cyan-400' : 'text-cyan-600'
@@ -192,7 +192,8 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
           >
             {Math.floor(progress)}%
           </motion.div>
-        </div>
+         
+        </div>  */
 <div className="absolute top-[50px] left-0 right-0 flex items-center justify-center">
 
         {/* Orbiting Particles */}
