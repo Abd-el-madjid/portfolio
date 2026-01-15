@@ -108,93 +108,9 @@ export function LoadingScreen({ isDark, progress }: LoadingScreenProps) {
           />
         </motion.div>
 
-        {/* Loading Text */}
-        <motion.h2
-          className={`text-3xl md:text-4xl mb-8 mt-9 font-bold ${
-            isDark ? 'text-white' : 'text-slate-900'
-          }`}
-          animate={{
-            opacity: [0.5, 1, 0.5],
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-          }}
-        >
-          Loading
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
-          >
-            .
-          </motion.span>
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}
-          >
-            .
-          </motion.span>
-          <motion.span
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: 1 }}
-          >
-            .
-          </motion.span>
-        </motion.h2>
-/*
-        {/* Progress Bar */}
-        <div className="w-64 md:w-96 relative">
-          {/* Background Track */}
-          <div
-            className="h-2 rounded-full overflow-hidden"
-            style={{
-              background: isDark
-                ? 'rgba(255, 255, 255, 0.1)'
-                : 'rgba(15, 23, 42, 0.1)',
-            }}
-          >
-            {/* Progress Fill */}
-            <motion.div
-              className="h-full rounded-full relative overflow-hidden"
-              style={{
-                background: isDark
-                  ? 'linear-gradient(90deg, #06b6d4, #8b5cf6, #ec4899)'
-                  : 'linear-gradient(90deg, #0891b2, #7c3aed, #db2777)',
-              }}
-              initial={{ width: '0%' }}
-              animate={{ width: `${Math.min(progress, 100)}%` }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Shimmer Effect */}
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                }}
-                animate={{
-                  x: ['-100%', '200%'],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: 'linear',
-                }}
-              />
-            </motion.div>
-          </div>
+      
 
-           {/* Progress Percentage */}
-          <motion.div
-            className={`text-center mt-4 text-sm font-medium ${
-              isDark ? 'text-cyan-400' : 'text-cyan-600'
-            }`}
-          >
-            {Math.floor(progress)}%
-          </motion.div>
-         
-        </div>  */
-<div className="absolute top-[50px] left-0 right-0 flex items-center justify-center">
+      <div className="absolute top-[50px] left-0 right-0 flex items-center justify-center">
 
         {/* Orbiting Particles */}
         {[...Array(8)].map((_, i) => {
