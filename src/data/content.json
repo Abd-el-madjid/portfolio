@@ -166,6 +166,19 @@
 
   "workExperience": [
     {
+  "company": "Cirta Soft",
+  "position": "Database Administrator",
+  "location": "Constantine, Algeria",
+  "period": "Feb 2026 - Aug 2026",
+  "description": "Managed and maintained client databases, ensuring data integrity and reliable database operations.",
+  "highlights": [
+    "Corrected inconsistencies and troubleshot client databases using MariaDB/MySQL",
+    "Performed database migrations across versions and production environments",
+    "Developed custom SQL queries to meet client business requirements"
+  ],
+  "technologies": ["MariaDB", "MySQL", "SQL"]
+},
+    {
       "company": "Ooredoo Algeria",
       "position": "AI Developer Intern",
       "location": "Constantine, Algeria",
