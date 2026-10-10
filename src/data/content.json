@@ -141,6 +141,13 @@
   },
 
   "education": [
+      {
+      "degree": "Master's in Systems and Software Engineering",
+      "institution": "Université Marie et Louis Pasteur, France",
+      "period": "2026 – 2027",
+      "grade": "In progress",
+      "description": "Second-year Master's in software engineering, system design and software architecture, ending with a 6-month end-of-studies internship (from March 2027)"
+    },
     {
       "degree": "Master's in Software Engineering & Intelligent Systems",
       "institution": "University of Constantine 2",
