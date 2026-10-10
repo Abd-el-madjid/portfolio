@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Calendar, Download } from 'lucide-react';
 import { IdentityBadge } from '../IdentityBadge';
 import React from 'react';
-import CV from '../../assets/home/General_CV_anglais___Software___Intelligent_Systems_Engineer__A.pdf';
+import CV from '../../assets/home/CV_Abdelmadjid_Kahoul.pdf';
 import { content } from '@/data/index';
 
 // Memoized character component for better performance
